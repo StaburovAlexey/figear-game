@@ -1,10 +1,10 @@
 <script setup>
-  import { initPixiApp } from './pixi/app';
-  import { onMounted } from 'vue';
+  import { initPixiApp } from './pixi/appPixi'
+  import { onMounted } from 'vue'
   onMounted(() => {
-    const gameContainer = document.getElementById('game-container');
-    initPixiApp(gameContainer);
-  });
+    const gameContainer = document.getElementById('game-container')
+    initPixiApp(gameContainer)
+  })
 </script>
 
 <template>
@@ -13,9 +13,10 @@
 
 <style scoped>
   .game-container {
-
-    max-width: 800px;
-    max-height: 600px;
+    width: 100%;
+    height: 100%;
+    /* max-width: 800px;
+    max-height: 600px; */
     display: flex;
     justify-content: center;
     align-items: center;
