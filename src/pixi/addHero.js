@@ -3,7 +3,7 @@ import { Graphics } from 'pixi.js'
 export async function addHero(app, speedGame = 4) {
   const heroRect = new Graphics()
   heroRect.beginFill(0xff0000)
-  heroRect.drawRect(0, 0, app.screen.width / 7, app.screen.height / 7)
+  heroRect.drawRect(0, 0, app.screen.width / 8, app.screen.height / 7)
   heroRect.endFill()
 
   heroRect.x = 50

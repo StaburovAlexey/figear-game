@@ -7,7 +7,7 @@ import { addObstacles } from './addBlocksOfRoad.js'
 export const initPixiApp = async (elementIdInit) => {
   const app = new Application()
 
-  const speedGame = 6
+  const speedGame = 2.8
 
   ;(async () => {
     await app.init({ background: '#021f4b', resizeTo: elementIdInit })
