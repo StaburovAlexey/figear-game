@@ -1,44 +1,37 @@
 import { Graphics } from 'pixi.js'
 
-export async function addHero(app, gravityGame, speedGame) {
-  console.log('gravityGame:', gravityGame) // ✅ отладка
-  console.log('speedGame:', speedGame)
+export async function addHero(app, speedGame = 4) {
   const heroRect = new Graphics()
-  const gravity = gravityGame
-  const jumpDistance = 250 // px — хотим фиксированную дальность
-  const t = jumpDistance / speedGame
-  const jumpSpeed = (gravity * t) / 2 // ← рассчитываем!
-  console.log('jumpSpeed:', jumpSpeed) // ✅ отладка
-  // Нарисовать прямоугольник героя
   heroRect.beginFill(0xff0000)
   heroRect.drawRect(0, 0, app.screen.width / 7, app.screen.height / 7)
   heroRect.endFill()
 
   heroRect.x = 50
 
-  // Позиции для двух линий
+  const jumpDistance = 200 // хотим фиксированную дальность
+  const jumpHeight = 60 // хотим фиксированную высоту
+
+  const t = jumpDistance / speedGame
+  const gravity = (8 * jumpHeight) / (t * t)
+  const jumpSpeed = (4 * jumpHeight) / t
+
+  console.log(`gravity: ${gravity.toFixed(2)}, jumpSpeed: ${jumpSpeed.toFixed(2)}`)
+
   const upperY = (app.screen.height - heroRect.height) / 1.19
   const lowerY = (app.screen.height - heroRect.height) / 1.07
 
-  // Текущая линия: 1 = верхняя, 2 = нижняя
   heroRect.currentLine = 2
   heroRect.y = lowerY
-
   heroRect.isJumping = false
   heroRect.jumpVelocity = 0
 
-  // Прыжок и перемещение
   addMoveHero(heroRect, upperY, lowerY, jumpSpeed, gravity, speedGame)
-  console.log('gravity:', gravity)
-  console.log('jumpSpeed:', jumpSpeed)
-  console.log('speedGame:', speedGame)
 
   heroRect.update = () => {
     if (heroRect.isJumping) {
-      heroRect.y += heroRect.jumpVelocity
-      heroRect.jumpVelocity += gravity
+      heroRect.y -= heroRect.jumpVelocity
+      heroRect.jumpVelocity -= gravity
 
-      // Если герой приземлился обратно на линию
       const targetY = heroRect.currentLine === 1 ? upperY : lowerY
       if (heroRect.y >= targetY) {
         heroRect.y = targetY
@@ -68,7 +61,7 @@ function addMoveHero(hero, upperY, lowerY, jumpSpeed, gravity, speedGame) {
     if (key === ' ' || key === 'Space') {
       if (!hero.isJumping) {
         hero.isJumping = true
-        hero.jumpVelocity = -jumpSpeed
+        hero.jumpVelocity = jumpSpeed
 
         // === Расчёт точки приземления ===
         const t = (2 * Math.abs(jumpSpeed)) / gravity
