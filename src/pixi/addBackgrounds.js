@@ -1,7 +1,7 @@
 import { Assets, Texture, Sprite, Container } from 'pixi.js'
 
-export async function addBackgrounds(app) {
-  const speedGame = 2
+export async function addBackgrounds(app, speed) {
+  const speedGame = speed
   const optionsRoadLamps = {
     width: app.screen.width,
     height: app.screen.height,
