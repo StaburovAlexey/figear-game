@@ -40,7 +40,7 @@ export async function addHero(app, speedGame = 4) {
       }
     }
   }
-
+  heroRect.zIndex = 2
   return heroRect
 }
 

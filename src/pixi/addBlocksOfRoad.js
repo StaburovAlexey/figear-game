@@ -1,10 +1,10 @@
 import { Sprite, Texture, Assets } from 'pixi.js'
 export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
+  let bloks = {}
   const obstacleWidth = heroHeight / 1.5
   const obstacleHeight = heroHeight / 1.5
-  const spawnInterval = 2000 // мс между спавнами
 
-  const textureNames = ['conus', 'conus2', 'block', 'dirt']
+  const textureNames = ['conus', 'conus2', 'block']
   const texturePaths = {
     conus: '/src/assets/background/conus.png',
     conus2: '/src/assets/background/conus2.png',
@@ -32,12 +32,11 @@ export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
     // sprite.anchor.set(0, 0) // если хочешь левый верх ка
     sprite.x = app.screen.width
     sprite.y = lineY + heroHeight - obstacleHeight // 👈 выравниваем по низу героя
-    sprite.zIndex = 1
+    sprite.zIndex = lineY === lowerY ? 2 : 0
     app.stage.addChild(sprite)
     return sprite
   }
-
-  app.ticker.add(() => {
+  bloks.update = async () => {
     for (const key of ['upper', 'lower']) {
       const obstacle = obstacles[key]
       if (obstacle) {
@@ -49,14 +48,15 @@ export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
         }
       }
     }
-  })
-
-  setInterval(async () => {
+  }
+  bloks.createBlocks = async () => {
     if (!obstacles.upper && Math.random() < 0.5) {
       obstacles.upper = await createObstacle(upperY)
     }
     if (!obstacles.lower && Math.random() < 0.5) {
       obstacles.lower = await createObstacle(lowerY)
     }
-  }, spawnInterval)
+  }
+
+  return bloks
 }

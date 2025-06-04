@@ -18,13 +18,16 @@ export const initPixiApp = async (elementIdInit) => {
     await addMoon(app)
     await addStars(app)
     await addBackgrounds(app, speedGame)
-    await addObstacles(app, speedGame, upperY, lowerY, heroHeight)
+    const obstacles = await addObstacles(app, speedGame, upperY, lowerY, heroHeight)
     const hero = await addHero(app, speedGame)
-    hero.zIndex = 2 // Устанавливаем zIndex для героя
     app.stage.addChild(hero)
     app.ticker.add(() => {
       hero.update()
+      obstacles.update()
     })
+    setInterval(() => {
+      obstacles.createBlocks()
+    }, 1000)
   })()
 }
 // Create a PixiJS application.
