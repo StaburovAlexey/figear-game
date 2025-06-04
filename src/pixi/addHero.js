@@ -9,7 +9,7 @@ export async function addHero(app, speedGame = 4) {
   heroRect.x = 50
 
   const jumpDistance = 200 // хотим фиксированную дальность
-  const jumpHeight = 60 // хотим фиксированную высоту
+  const jumpHeight = 100 // хотим фиксированную высоту
 
   const t = jumpDistance / speedGame
   const gravity = (8 * jumpHeight) / (t * t)
