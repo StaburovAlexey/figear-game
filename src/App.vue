@@ -1,6 +1,7 @@
 <script setup>
   import { initPixiApp } from './pixi/appPixi'
   import { onMounted } from 'vue'
+  import GameHeader from './components/GameHeader.vue'
   onMounted(() => {
     const gameContainer = document.getElementById('game-container')
     initPixiApp(gameContainer)
@@ -8,6 +9,7 @@
 </script>
 
 <template>
+  <GameHeader :score="100" :lives="2" :bullets="22" :coins="5" />
   <div id="game-container" class="game-container"></div>
 </template>
 
