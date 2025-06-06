@@ -5,7 +5,7 @@ import { addBackgrounds } from './addBackgrounds'
 import { addHero } from './addHero'
 import { addObstacles } from './addBlocksOfRoad.js'
 
-export const initPixiApp = async (elementIdInit) => {
+export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   const app = new Application()
   const element = elementIdInit
 
@@ -54,13 +54,17 @@ export const initPixiApp = async (elementIdInit) => {
     obstacles.update()
     if (colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
-      gameOver()
+      stateRefs.lives.value = stateRefs.lives.value - 1
+      if (stateRefs.lives.value <= 0) {
+        gameOver()
+      }
     }
   }
 
   function gameOver() {
     if (isGameOver) return
     isGameOver = true
+
     app.ticker.stop()
     app.stage.alpha = 0.5
 

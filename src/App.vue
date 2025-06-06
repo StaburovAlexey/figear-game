@@ -1,15 +1,20 @@
 <script setup>
   import { initPixiApp } from './pixi/appPixi'
-  import { onMounted } from 'vue'
+  import { onMounted, ref } from 'vue'
   import GameHeader from './components/GameHeader.vue'
+  // реактивные данные
+  const score = ref(0)
+  const lives = ref(3)
+  const bullets = ref(10)
+  const coins = ref(0)
   onMounted(() => {
     const gameContainer = document.getElementById('game-container')
-    initPixiApp(gameContainer)
+    initPixiApp(gameContainer, { score, lives, bullets, coins })
   })
 </script>
 
 <template>
-  <GameHeader :score="100" :lives="2" :bullets="22" :coins="5" />
+  <GameHeader :score="score" :lives="lives" :bullets="bullets" :coins="coins" />
   <div id="game-container" class="game-container"></div>
 </template>
 

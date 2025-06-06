@@ -21,10 +21,6 @@
       <span class="value">{{ bullets }}</span>
       <img src="" alt="bullet" class="icon" />
     </div>
-    <div class="coin-section">
-      <img src="" alt="coin" class="coin-icon" />
-      <span class="value">{{ coins }}</span>
-    </div>
   </div>
 </template>
 
