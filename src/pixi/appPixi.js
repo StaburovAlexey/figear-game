@@ -12,7 +12,7 @@ export const initPixiApp = async (elementIdInit) => {
   let isGameOver = false
   let gameOverText = null
   let hero, obstacles
-  const speedGame = 2.8
+  const speedGame = 3
 
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)
@@ -77,6 +77,7 @@ export const initPixiApp = async (elementIdInit) => {
 
   function restartGame() {
     app.ticker.stop()
+    app.ticker.remove(gameLoop)
     startGame()
   }
 
