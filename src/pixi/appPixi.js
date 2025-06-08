@@ -19,7 +19,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
   // Обработчик перезапуска
   document.addEventListener('keydown', (e) => {
-    if (isGameOver && (e.key === ' ' || e.key === 'Spacebar')) {
+    if (isGameOver && e.key === 'Enter') {
       restartGame()
     }
   })
@@ -40,7 +40,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
     obstacles = await addObstacles(app, speedGame, upperY, lowerY, heroHeight)
     hero = await addHero(app, speedGame)
-
+    addMoveHero(hero)
     app.stage.addChild(hero)
 
     app.ticker.start()
@@ -52,9 +52,10 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
     hero.update()
     obstacles.update()
-    if (colisionCheck(hero, obstacles)) {
+    if (!hero.flashing && colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
       stateRefs.lives.value = stateRefs.lives.value - 1
+      hero.invulnerable()
       if (stateRefs.lives.value <= 0) {
         gameOver()
       }
@@ -66,9 +67,9 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     isGameOver = true
 
     app.ticker.stop()
-    app.stage.alpha = 0.5
+    app.stage.removeChildren() // очищаем всё
 
-    gameOverText = new Text('GAME OVER\nPress Space to Restart', {
+    gameOverText = new Text('GAME OVER\nPress Enter to Restart', {
       fill: 'white',
       fontSize: 40,
       align: 'center',
@@ -111,4 +112,18 @@ function colisionCheck(hero, obstacles) {
       return true // Столкновение обнаружено
     }
   }
+}
+
+function addMoveHero(hero) {
+  document.addEventListener('keydown', (event) => {
+    const key = event.key
+
+    if (key === 'ArrowUp' || key === 'ArrowDown') {
+      hero.move(key)
+    }
+
+    if (key === ' ' || key === 'Space') {
+      hero.jump()
+    }
+  })
 }

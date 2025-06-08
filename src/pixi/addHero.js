@@ -5,7 +5,6 @@ export async function addHero(app, speedGame = 4) {
   heroRect.beginFill(0xff0000)
   heroRect.drawRect(0, 0, app.screen.width / 8, app.screen.height / 7)
   heroRect.endFill()
-
   heroRect.x = 50
 
   const jumpDistance = 200 // хотим фиксированную дальность
@@ -15,8 +14,6 @@ export async function addHero(app, speedGame = 4) {
   const gravity = (8 * jumpHeight) / (t * t)
   const jumpSpeed = (4 * jumpHeight) / t
 
-  console.log(`gravity: ${gravity.toFixed(2)}, jumpSpeed: ${jumpSpeed.toFixed(2)}`)
-
   const upperY = (app.screen.height - heroRect.height) / 1.19
   const lowerY = (app.screen.height - heroRect.height) / 1.07
 
@@ -24,8 +21,6 @@ export async function addHero(app, speedGame = 4) {
   heroRect.y = lowerY
   heroRect.isJumping = false
   heroRect.jumpVelocity = 0
-
-  addMoveHero(heroRect, upperY, lowerY, jumpSpeed, gravity, speedGame)
 
   heroRect.update = () => {
     if (heroRect.isJumping) {
@@ -40,36 +35,38 @@ export async function addHero(app, speedGame = 4) {
       }
     }
   }
-  heroRect.zIndex = 2
-  return heroRect
-}
+  heroRect.jump = () => {
+    if (!heroRect.isJumping) {
+      heroRect.isJumping = true
+      heroRect.jumpVelocity = jumpSpeed
 
-function addMoveHero(hero, upperY, lowerY, jumpSpeed, gravity, speedGame) {
-  document.addEventListener('keydown', (event) => {
-    const key = event.key
+      // === Расчёт точки приземления ===
+      const t = (2 * Math.abs(jumpSpeed)) / gravity
+      const dx = speedGame * t
+      const landingX = heroRect.x + dx
 
+      console.log(`Герой приземлится примерно на x = ${landingX.toFixed(2)}`)
+    }
+  }
+  heroRect.move = (key) => {
     if (key === 'ArrowUp') {
-      hero.currentLine = 1
-      if (!hero.isJumping) hero.y = upperY
+      heroRect.currentLine = 1
+      if (!heroRect.isJumping) heroRect.y = upperY
     }
 
     if (key === 'ArrowDown') {
-      hero.currentLine = 2
-      if (!hero.isJumping) hero.y = lowerY
+      heroRect.currentLine = 2
+      if (!heroRect.isJumping) heroRect.y = lowerY
     }
-
-    if (key === ' ' || key === 'Space') {
-      if (!hero.isJumping) {
-        hero.isJumping = true
-        hero.jumpVelocity = jumpSpeed
-
-        // === Расчёт точки приземления ===
-        const t = (2 * Math.abs(jumpSpeed)) / gravity
-        const dx = speedGame * t
-        const landingX = hero.x + dx
-
-        console.log(`Герой приземлится примерно на x = ${landingX.toFixed(2)}`)
-      }
-    }
-  })
+  }
+  heroRect.invulnerable = () => {
+    heroRect.flashing = true
+    heroRect.alpha = 0.3
+    setTimeout(() => {
+      heroRect.alpha = 1
+      heroRect.flashing = false
+    }, 2000)
+  }
+  heroRect.zIndex = 2
+  return heroRect
 }
