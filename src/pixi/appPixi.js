@@ -11,7 +11,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   let isGameOver = false
   let gameOverText = null
   let hero, obstacles
-  const speedGame = 6
+  const speedGame = 3
 
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)

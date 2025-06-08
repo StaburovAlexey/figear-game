@@ -1,78 +1,97 @@
-import { Graphics } from 'pixi.js'
-
+import { Texture, AnimatedSprite, Assets } from 'pixi.js'
 export async function addHero(app, speedGame = 4, heroHeight) {
-  const heroRect = new Graphics()
-  heroRect.beginFill(0xff0000)
-  heroRect.drawRect(0, 0, app.screen.width / 8, heroHeight)
-  heroRect.endFill()
-  heroRect.x = 50
+  const framePaths = [
+    '/src/assets/hero/go_1.png',
+    '/src/assets/hero/go_2.png',
+    '/src/assets/hero/go_3.png',
+    '/src/assets/hero/go_4.png',
+    '/src/assets/hero/go_5.png',
+    '/src/assets/hero/go_6.png',
+  ]
+
+  // Загружаем текстуры
+  await Assets.load(framePaths)
+  const textures = framePaths.map((path) => Texture.from(path))
+
+  // Создаём анимированного персонажа
+  const hero = new AnimatedSprite(textures)
+  hero.animationSpeed = 0.15
+  hero.play()
+  hero.width = heroHeight * 2
+  hero.height = heroHeight * 2
+  // Масштабируем до нужной высоты
+  // const scale = heroHeight / hero.height
+  // hero.scale.set(scale)
+
+  hero.x = 50
   const obstacleWidth = heroHeight / 1.5
-  const jumpDistance = obstacleWidth * 5 // хотим фиксированную дальность
-  const jumpHeight = heroHeight * 2 // хотим фиксированную высоту
+  const jumpDistance = obstacleWidth * 5
+  const jumpHeight = heroHeight * 2
 
   const t = jumpDistance / speedGame
   const gravity = (8 * jumpHeight) / (t * t)
   const jumpSpeed = (4 * jumpHeight) / t
 
-  const upperY = (app.screen.height - heroRect.height) / 1.19
-  const lowerY = (app.screen.height - heroRect.height) / 1.07
+  const upperY = (app.screen.height - hero.height) / 1.19
+  const lowerY = (app.screen.height - hero.height) / 1.07
 
-  heroRect.currentLine = 2
-  heroRect.y = lowerY
-  heroRect.isJumping = false
-  heroRect.jumpVelocity = 0
+  hero.currentLine = 2
+  hero.y = lowerY
+  hero.isJumping = false
+  hero.jumpVelocity = 0
 
-  heroRect.update = () => {
-    if (heroRect.isJumping) {
-      heroRect.y -= heroRect.jumpVelocity
-      heroRect.jumpVelocity -= gravity
+  hero.update = () => {
+    if (hero.isJumping) {
+      hero.y -= hero.jumpVelocity
+      hero.jumpVelocity -= gravity
 
-      const targetY = heroRect.currentLine === 1 ? upperY : lowerY
-      if (heroRect.y >= targetY) {
-        heroRect.y = targetY
-        heroRect.isJumping = false
-        heroRect.jumpVelocity = 0
+      const targetY = hero.currentLine === 1 ? upperY : lowerY
+      if (hero.y >= targetY) {
+        hero.y = targetY
+        hero.isJumping = false
+        hero.jumpVelocity = 0
       }
     }
   }
-  heroRect.jump = () => {
-    if (!heroRect.isJumping) {
-      heroRect.isJumping = true
-      heroRect.jumpVelocity = jumpSpeed
 
-      // === Расчёт точки приземления ===
+  hero.jump = () => {
+    if (!hero.isJumping) {
+      hero.isJumping = true
+      hero.jumpVelocity = jumpSpeed
+
       const t = (2 * Math.abs(jumpSpeed)) / gravity
       const dx = speedGame * t
-      const landingX = heroRect.x + dx
+      const landingX = hero.x + dx
 
       console.log(`Герой приземлится примерно на x = ${landingX.toFixed(2)}`)
     }
   }
-  heroRect.move = (key) => {
+
+  hero.move = (key) => {
     if (key === 'ArrowUp') {
-      heroRect.currentLine = 1
-      if (!heroRect.isJumping) heroRect.y = upperY
+      hero.currentLine = 1
+      if (!hero.isJumping) hero.y = upperY
     }
 
     if (key === 'ArrowDown') {
-      heroRect.currentLine = 2
-      if (!heroRect.isJumping) heroRect.y = lowerY
+      hero.currentLine = 2
+      if (!hero.isJumping) hero.y = lowerY
     }
   }
-  heroRect.invulnerable = () => {
+
+  hero.invulnerable = () => {
     const flashingInterval = setInterval(() => {
-      if (heroRect.alpha === 1) heroRect.alpha = 0.3
-      else heroRect.alpha = 1
+      hero.alpha = hero.alpha === 1 ? 0.3 : 1
     }, 150)
-    heroRect.flashing = true
-    flashingInterval
-    heroRect.alpha = 0.3
+    hero.flashing = true
+    hero.alpha = 0.3
     setTimeout(() => {
-      heroRect.alpha = 1
-      heroRect.flashing = false
+      hero.alpha = 1
+      hero.flashing = false
       clearInterval(flashingInterval)
     }, 2000)
   }
-  heroRect.zIndex = 2
-  return heroRect
+
+  hero.zIndex = 2
+  return hero
 }
