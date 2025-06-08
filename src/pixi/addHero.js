@@ -1,14 +1,14 @@
 import { Graphics } from 'pixi.js'
 
-export async function addHero(app, speedGame = 4) {
+export async function addHero(app, speedGame = 4, heroHeight) {
   const heroRect = new Graphics()
   heroRect.beginFill(0xff0000)
-  heroRect.drawRect(0, 0, app.screen.width / 8, app.screen.height / 7)
+  heroRect.drawRect(0, 0, app.screen.width / 8, heroHeight)
   heroRect.endFill()
   heroRect.x = 50
-
-  const jumpDistance = 200 // хотим фиксированную дальность
-  const jumpHeight = 100 // хотим фиксированную высоту
+  const obstacleWidth = heroHeight / 1.5
+  const jumpDistance = obstacleWidth * 5 // хотим фиксированную дальность
+  const jumpHeight = heroHeight * 2 // хотим фиксированную высоту
 
   const t = jumpDistance / speedGame
   const gravity = (8 * jumpHeight) / (t * t)
@@ -60,11 +60,17 @@ export async function addHero(app, speedGame = 4) {
     }
   }
   heroRect.invulnerable = () => {
+    const flashingInterval = setInterval(() => {
+      if (heroRect.alpha === 1) heroRect.alpha = 0.3
+      else heroRect.alpha = 1
+    }, 150)
     heroRect.flashing = true
+    flashingInterval
     heroRect.alpha = 0.3
     setTimeout(() => {
       heroRect.alpha = 1
       heroRect.flashing = false
+      clearInterval(flashingInterval)
     }, 2000)
   }
   heroRect.zIndex = 2

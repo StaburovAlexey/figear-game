@@ -8,11 +8,10 @@ import { addObstacles } from './addBlocksOfRoad.js'
 export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   const app = new Application()
   const element = elementIdInit
-
   let isGameOver = false
   let gameOverText = null
   let hero, obstacles
-  const speedGame = 3
+  const speedGame = 6
 
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)
@@ -25,6 +24,8 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   })
 
   async function startGame() {
+    stateRefs.lives.value = 3
+    stateRefs.score.value = 0
     app.stage.removeChildren()
     app.stage.alpha = 1
     isGameOver = false
@@ -39,7 +40,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     await addBackgrounds(app, speedGame)
 
     obstacles = await addObstacles(app, speedGame, upperY, lowerY, heroHeight)
-    hero = await addHero(app, speedGame)
+    hero = await addHero(app, speedGame, heroHeight)
     addMoveHero(hero)
     app.stage.addChild(hero)
 
@@ -49,7 +50,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
   function gameLoop() {
     if (isGameOver) return
-
+    stateRefs.score.value = Math.round(stateRefs.score.value + 0.1 * speedGame)
     hero.update()
     obstacles.update()
     if (!hero.flashing && colisionCheck(hero, obstacles)) {
@@ -65,7 +66,6 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   function gameOver() {
     if (isGameOver) return
     isGameOver = true
-
     app.ticker.stop()
     app.stage.removeChildren() // очищаем всё
 
