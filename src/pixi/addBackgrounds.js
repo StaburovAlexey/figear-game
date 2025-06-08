@@ -48,14 +48,9 @@ async function createRoadLamps(app, options = {}) {
   sprite2.height = options.height
   app.stage.addChild(sprite, sprite2)
   app.ticker.add((time) => {
-    // Calculate the amount of distance to move the mountain groups per tick.
     const dx = time.deltaTime * options.speed
-
-    // Move the mountain groups leftwards.
     sprite.x -= dx
     sprite2.x -= dx
-
-    // Reposition the mountain groups when they move off screen.
     if (sprite.x <= -app.screen.width) {
       sprite.x += app.screen.width * 2
     }
@@ -117,14 +112,10 @@ async function creatWall(app, options = {}) {
   sprite2.y = options.y
   app.stage.addChild(sprite, sprite2)
   app.ticker.add((time) => {
-    // Calculate the amount of distance to move the mountain groups per tick.
     const dx = time.deltaTime * options.speed
-
-    // Move the mountain groups leftwards.
     sprite.x -= dx
     sprite2.x -= dx
 
-    // Reposition the mountain groups when they move off screen.
     if (sprite.x <= -app.screen.width) {
       sprite.x += app.screen.width * 2
     }

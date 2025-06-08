@@ -11,12 +11,11 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   let isGameOver = false
   let gameOverText = null
   let hero, obstacles
-  const speedGame = 3
+  const speedGame = 6
 
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)
 
-  // Обработчик перезапуска
   document.addEventListener('keydown', (e) => {
     if (isGameOver && e.key === 'Enter') {
       restartGame()
@@ -67,7 +66,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     if (isGameOver) return
     isGameOver = true
     app.ticker.stop()
-    app.stage.removeChildren() // очищаем всё
+    app.stage.removeChildren()
 
     gameOverText = new Text('GAME OVER\nPress Enter to Restart', {
       fill: 'white',
@@ -89,9 +88,9 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   await startGame()
 }
 
-// Create a PixiJS application.
+
 function colisionCheck(hero, obstacles) {
-  if (hero.isJumping) return // в прыжке не проверяем столкновение
+  if (hero.isJumping) return
 
   const heroBounds = hero.getBounds()
   const heroBottomY = heroBounds.y + heroBounds.height
@@ -100,16 +99,14 @@ function colisionCheck(hero, obstacles) {
     const blockBounds = block.getBounds()
     const blockBottomY = blockBounds.y + blockBounds.height
 
-    // Условие: нижние точки примерно совпадают по Y
     const isBottomAligned = Math.abs(heroBottomY - blockBottomY) < 10
-
-    // Условие: пересечение по оси X
+ 
     const isXOverlap =
       heroBounds.x + heroBounds.width > blockBounds.x &&
       heroBounds.x < blockBounds.x + blockBounds.width
 
     if (isBottomAligned && isXOverlap) {
-      return true // Столкновение обнаружено
+      return true 
     }
   }
 }

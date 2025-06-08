@@ -1,6 +1,6 @@
 import { Texture, AnimatedSprite, Assets } from 'pixi.js'
 export async function addHero(app, speedGame = 4, heroHeight) {
-  const framePaths = [
+  const ridePaths = [
     '/src/assets/hero/go_1.png',
     '/src/assets/hero/go_2.png',
     '/src/assets/hero/go_3.png',
@@ -8,24 +8,38 @@ export async function addHero(app, speedGame = 4, heroHeight) {
     '/src/assets/hero/go_5.png',
     '/src/assets/hero/go_6.png',
   ]
+  const jumpPaths = [
+    '/src/assets/hero/jump_1.png',
+    '/src/assets/hero/jump_2.png',
+    '/src/assets/hero/jump_3.png',
+    '/src/assets/hero/jump_4.png',
+    '/src/assets/hero/jump_5.png',
+    '/src/assets/hero/jump_6.png',
+    '/src/assets/hero/jump_7.png',
+    '/src/assets/hero/jump_8.png',
+    '/src/assets/hero/jump_9.png',
+  ]
+  await Assets.load([...ridePaths, ...jumpPaths])
 
-  // Загружаем текстуры
-  await Assets.load(framePaths)
-  const textures = framePaths.map((path) => Texture.from(path))
+  const rideTextures = ridePaths.map((p) => Texture.from(p))
+  const jumpTextures = jumpPaths.map((p) => Texture.from(p))
 
-  // Создаём анимированного персонажа
-  const hero = new AnimatedSprite(textures)
-  hero.animationSpeed = 0.15
+  const animationSpeed = 0.15
+
+  const hero = new AnimatedSprite(rideTextures)
+  hero.animationSpeed = animationSpeed
+  hero.loop = true
   hero.play()
-  hero.width = heroHeight
-  hero.height = heroHeight
-  // Масштабируем до нужной высоты
- 
 
+  // Масштаб по высоте
+  const scale = heroHeight / hero.height
+  hero.scale.set(scale)
   hero.x = 50
-  const obstacleWidth = heroHeight / 3
-  const jumpDistance = obstacleWidth * 5
-  const jumpHeight = heroHeight * 1.2
+
+  // Прыжковые переменные
+  const obstacleWidth = heroHeight / 1.5
+  const jumpDistance = obstacleWidth * 7
+  const jumpHeight = heroHeight / 1.3
 
   const t = jumpDistance / speedGame
   const gravity = (8 * jumpHeight) / (t * t)
@@ -49,6 +63,12 @@ export async function addHero(app, speedGame = 4, heroHeight) {
         hero.y = targetY
         hero.isJumping = false
         hero.jumpVelocity = 0
+
+        // Вернуть анимацию езды
+        hero.textures = rideTextures
+        hero.loop = true
+        hero.animationSpeed = animationSpeed
+        hero.play()
       }
     }
   }
@@ -58,10 +78,15 @@ export async function addHero(app, speedGame = 4, heroHeight) {
       hero.isJumping = true
       hero.jumpVelocity = jumpSpeed
 
+      // Переключаем на прыжковую анимацию
+      hero.textures = jumpTextures
+      hero.loop = false
+      hero.animationSpeed = animationSpeed
+      hero.gotoAndPlay(0)
+
       const t = (2 * Math.abs(jumpSpeed)) / gravity
       const dx = speedGame * t
       const landingX = hero.x + dx
-
       console.log(`Герой приземлится примерно на x = ${landingX.toFixed(2)}`)
     }
   }
