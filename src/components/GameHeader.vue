@@ -11,7 +11,7 @@
   <div class="game-header">
     <div class="header-section left">
       <span class="label">SCORE</span>
-      <span class="value">{{ score }}</span>
+      <span class="value">{{ Math.floor(score) }}</span>
     </div>
     <div class="header-section center">
       <img src="" alt="heart" class="icon" />

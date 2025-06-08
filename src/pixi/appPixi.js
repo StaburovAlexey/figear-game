@@ -31,7 +31,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     isGameOver = false
     gameOverText = null
 
-    const heroHeight = app.screen.height / 7
+    const heroHeight = app.screen.height / 4
     const upperY = (app.screen.height - heroHeight) / 1.19
     const lowerY = (app.screen.height - heroHeight) / 1.07
 
@@ -50,7 +50,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
   function gameLoop() {
     if (isGameOver) return
-    stateRefs.score.value = Math.round(stateRefs.score.value + 0.1 * speedGame)
+    stateRefs.score.value += 0.05 * (speedGame / 1.2)
     hero.update()
     obstacles.update()
     if (!hero.flashing && colisionCheck(hero, obstacles)) {

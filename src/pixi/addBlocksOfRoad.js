@@ -1,8 +1,8 @@
 import { Sprite, Texture, Assets } from 'pixi.js'
 
 export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
-  const obstacleWidth = heroHeight / 1.5
-  const obstacleHeight = heroHeight / 1.5
+  const obstacleWidth = heroHeight / 3
+  const obstacleHeight = heroHeight / 3
   const textureNames = ['conus', 'conus2', 'block']
   const texturePaths = {
     conus: '/src/assets/background/conus.png',

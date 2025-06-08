@@ -17,16 +17,15 @@ export async function addHero(app, speedGame = 4, heroHeight) {
   const hero = new AnimatedSprite(textures)
   hero.animationSpeed = 0.15
   hero.play()
-  hero.width = heroHeight * 2
-  hero.height = heroHeight * 2
+  hero.width = heroHeight
+  hero.height = heroHeight
   // Масштабируем до нужной высоты
-  // const scale = heroHeight / hero.height
-  // hero.scale.set(scale)
+ 
 
   hero.x = 50
-  const obstacleWidth = heroHeight / 1.5
+  const obstacleWidth = heroHeight / 3
   const jumpDistance = obstacleWidth * 5
-  const jumpHeight = heroHeight * 2
+  const jumpHeight = heroHeight * 1.2
 
   const t = jumpDistance / speedGame
   const gravity = (8 * jumpHeight) / (t * t)
