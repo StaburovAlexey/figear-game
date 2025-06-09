@@ -1,5 +1,5 @@
 import { AnimatedSprite, Assets } from 'pixi.js'
-export async function addHero(app, speedGame = 4, heroHeight) {
+export async function addHero(app, speedGame = 4, heroHeight, upperY, lowerY) {
   const rideAliases = ['go_1', 'go_2', 'go_3', 'go_4', 'go_5', 'go_6']
   const jumpAliases = [
     'jump_1',
@@ -36,8 +36,8 @@ export async function addHero(app, speedGame = 4, heroHeight) {
   const gravity = (8 * jumpHeight) / (t * t)
   const jumpSpeed = (4 * jumpHeight) / t
 
-  const upperY = (app.screen.height - hero.height) / 1.19
-  const lowerY = (app.screen.height - hero.height) / 1.07
+  // const upperY = (app.screen.height - hero.height) / 1.19
+  // const lowerY = (app.screen.height - hero.height) / 1.07
 
   hero.currentLine = 2
   hero.y = lowerY
@@ -68,7 +68,6 @@ export async function addHero(app, speedGame = 4, heroHeight) {
     if (!hero.isJumping) {
       hero.isJumping = true
       hero.jumpVelocity = jumpSpeed
-
       // Переключаем на прыжковую анимацию
       hero.textures = jumpTextures
       hero.loop = false

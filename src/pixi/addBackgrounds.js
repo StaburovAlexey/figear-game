@@ -4,9 +4,9 @@ export async function addBackgrounds(app, speed) {
   const speedGame = speed
   const optionsRoadLamps = {
     width: app.screen.width,
-    height: app.screen.height,
+    height: app.screen.height * 1.2,
     x: 0,
-    y: 0,
+    y: app.screen.height - app.screen.height * 1.2,
     speed: speedGame * 2,
   }
   const optionsHouses = {

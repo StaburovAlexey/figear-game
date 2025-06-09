@@ -11,7 +11,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   let isGameOver = false
   let gameOverText = null
   let hero, obstacles
-  const speedGame = 6
+  const speedGame = 3
 
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)
@@ -31,15 +31,15 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     gameOverText = null
 
     const heroHeight = app.screen.height / 4
-    const upperY = (app.screen.height - heroHeight) / 1.19
-    const lowerY = (app.screen.height - heroHeight) / 1.07
+    const upperY = (app.screen.height - heroHeight) / 1.15
+    const lowerY = (app.screen.height - heroHeight) / 1.02
 
     await addMoon(app)
     await addStars(app)
     await addBackgrounds(app, speedGame)
 
     obstacles = await addObstacles(app, speedGame, upperY, lowerY, heroHeight)
-    hero = await addHero(app, speedGame, heroHeight)
+    hero = await addHero(app, speedGame, heroHeight, upperY, lowerY)
     addMoveHero(hero)
     app.stage.addChild(hero)
 
@@ -57,12 +57,13 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
       stateRefs.lives.value = stateRefs.lives.value - 1
       hero.invulnerable()
       if (stateRefs.lives.value <= 0) {
-        gameOver()
+        // gameOver()
       }
     }
   }
 
   function gameOver() {
+    console.log('🔥 gameOver вызван')
     if (isGameOver) return
     isGameOver = true
     app.ticker.stop()
