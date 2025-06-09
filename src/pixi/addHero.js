@@ -1,28 +1,19 @@
-import { Texture, AnimatedSprite, Assets } from 'pixi.js'
+import { AnimatedSprite, Assets } from 'pixi.js'
 export async function addHero(app, speedGame = 4, heroHeight) {
-  const ridePaths = [
-    '/src/assets/hero/go_1.png',
-    '/src/assets/hero/go_2.png',
-    '/src/assets/hero/go_3.png',
-    '/src/assets/hero/go_4.png',
-    '/src/assets/hero/go_5.png',
-    '/src/assets/hero/go_6.png',
+  const rideAliases = ['go_1', 'go_2', 'go_3', 'go_4', 'go_5', 'go_6']
+  const jumpAliases = [
+    'jump_1',
+    'jump_2',
+    'jump_3',
+    'jump_4',
+    'jump_5',
+    'jump_6',
+    'jump_7',
+    'jump_8',
+    'jump_9',
   ]
-  const jumpPaths = [
-    '/src/assets/hero/jump_1.png',
-    '/src/assets/hero/jump_2.png',
-    '/src/assets/hero/jump_3.png',
-    '/src/assets/hero/jump_4.png',
-    '/src/assets/hero/jump_5.png',
-    '/src/assets/hero/jump_6.png',
-    '/src/assets/hero/jump_7.png',
-    '/src/assets/hero/jump_8.png',
-    '/src/assets/hero/jump_9.png',
-  ]
-  await Assets.load([...ridePaths, ...jumpPaths])
-
-  const rideTextures = ridePaths.map((p) => Texture.from(p))
-  const jumpTextures = jumpPaths.map((p) => Texture.from(p))
+  const rideTextures = rideAliases.map((p) => Assets.get(p))
+  const jumpTextures = jumpAliases.map((p) => Assets.get(p))
 
   const animationSpeed = 0.15
 

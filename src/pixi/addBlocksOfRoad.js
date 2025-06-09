@@ -1,17 +1,9 @@
-import { Sprite, Texture, Assets } from 'pixi.js'
+import { Sprite, Assets } from 'pixi.js'
 
 export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
   const obstacleWidth = heroHeight / 3
   const obstacleHeight = heroHeight / 3
   const textureNames = ['conus', 'conus2', 'block']
-  const texturePaths = {
-    conus: '/src/assets/background/conus.png',
-    conus2: '/src/assets/background/conus2.png',
-    block: '/src/assets/background/block.png',
-  }
-
-  await Assets.load(Object.entries(texturePaths).map(([alias, src]) => ({ alias, src })))
-
   const obstacles = {
     upper: null,
     lower: null,
@@ -19,7 +11,7 @@ export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
 
   function getRandomTexture() {
     const name = textureNames[Math.floor(Math.random() * textureNames.length)]
-    return { name, texture: Texture.from(name) }
+    return { name, texture: Assets.get(name) }
   }
 
   function createObstacle(lineY) {

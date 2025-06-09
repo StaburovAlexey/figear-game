@@ -88,7 +88,6 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   await startGame()
 }
 
-
 function colisionCheck(hero, obstacles) {
   if (hero.isJumping) return
 
@@ -100,13 +99,13 @@ function colisionCheck(hero, obstacles) {
     const blockBottomY = blockBounds.y + blockBounds.height
 
     const isBottomAligned = Math.abs(heroBottomY - blockBottomY) < 10
- 
+
     const isXOverlap =
       heroBounds.x + heroBounds.width > blockBounds.x &&
       heroBounds.x < blockBounds.x + blockBounds.width
 
     if (isBottomAligned && isXOverlap) {
-      return true 
+      return true
     }
   }
 }

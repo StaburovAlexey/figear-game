@@ -1,4 +1,4 @@
-import { Assets, Texture, Sprite, Container } from 'pixi.js'
+import { Assets, Sprite, Container } from 'pixi.js'
 
 export async function addBackgrounds(app, speed) {
   const speedGame = speed
@@ -6,7 +6,7 @@ export async function addBackgrounds(app, speed) {
     width: app.screen.width,
     height: app.screen.height,
     x: 0,
-    y: app.screen.height / 3.7,
+    y: 0,
     speed: speedGame * 2,
   }
   const optionsHouses = {
@@ -31,11 +31,8 @@ export async function addBackgrounds(app, speed) {
   await createRoadLamps(app, optionsRoadLamps)
 }
 async function createRoadLamps(app, options = {}) {
-  await Assets.load({
-    alias: 'road',
-    src: '/src/assets/background/road_lamp-pix.png',
-  })
-  const texture = Texture.from('road')
+  const texture = Assets.get('road_lamps')
+  console.log(texture)
   const sprite = new Sprite(texture)
   const sprite2 = new Sprite(texture)
   sprite.x = options.x
@@ -61,11 +58,7 @@ async function createRoadLamps(app, options = {}) {
 }
 
 async function createHouses(app, options = {}) {
-  await Assets.load({
-    alias: 'houses',
-    src: '/src/assets/background/houses3.png',
-  })
-  const texture = Texture.from('houses')
+  const texture = Assets.get('houses3')
   const sprite = new Sprite(texture)
   const sprite2 = new Sprite(texture)
   sprite.width = options.width
@@ -95,11 +88,7 @@ async function createHouses(app, options = {}) {
   })
 }
 async function creatWall(app, options = {}) {
-  await Assets.load({
-    alias: 'bar',
-    src: '/src/assets/background/wall_pixel_grey.png',
-  })
-  const texture = Texture.from('bar')
+  const texture = Assets.get('wall_pixel_grey')
   const sprite = new Sprite(texture)
   const sprite2 = new Sprite(texture)
   sprite.width = options.width
@@ -126,11 +115,7 @@ async function creatWall(app, options = {}) {
 }
 
 async function createHouse(app, nameAsset) {
-  await Assets.load({
-    alias: nameAsset,
-    src: `/src/assets/background/${nameAsset}.png`,
-  })
-  const texture = Texture.from(nameAsset)
+  const texture = Assets.get(nameAsset)
   const sprite = new Sprite(texture)
   switch (nameAsset) {
     case 'house1':
