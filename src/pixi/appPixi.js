@@ -30,8 +30,8 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     isGameOver = false
     gameOverText = null
 
-    const heroHeight = app.screen.height / 4
-    const upperY = (app.screen.height - heroHeight) / 1.15
+    const heroHeight = app.screen.height / 3 
+    const upperY = (app.screen.height - heroHeight) / 1.19
     const lowerY = (app.screen.height - heroHeight) / 1.02
 
     await addMoon(app)
