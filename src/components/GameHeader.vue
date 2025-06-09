@@ -31,14 +31,16 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    background-color: #2b2b38; /* тёмно-синий/фиолетовый */
-    border: 4px solid #111; /* почти чёрная рамка */
+    /* background-color: #2b2b38; тёмно-синий/фиолетовый */
+    /* border: 4px solid #111; почти чёрная рамка */
     padding: 10px 20px;
     font-family: monospace;
     font-size: 24px;
     color: #f7e4cc;
     image-rendering: pixelated;
-    position: relative;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .header-section {
