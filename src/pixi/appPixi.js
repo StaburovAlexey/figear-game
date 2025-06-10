@@ -10,7 +10,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   const element = elementIdInit
   let isGameOver = false
   let gameOverText = null
-  let hero, obstacles
+  let hero, obstacles, background
   const speedGame = 3
 
   await app.init({ background: '#021f4b', resizeTo: element })
@@ -36,7 +36,8 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
     await addMoon(app)
     await addStars(app)
-    await addBackgrounds(app, speedGame)
+
+    background = await addBackgrounds(app, speedGame)
 
     obstacles = await addObstacles(app, speedGame, upperY, lowerY, heroHeight)
     hero = await addHero(app, speedGame, heroHeight, upperY, lowerY)
@@ -52,6 +53,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     stateRefs.score.value += 0.05 * (speedGame / 1.2)
     hero.update()
     obstacles.update()
+    background.update()
     if (!hero.flashing && colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
       stateRefs.lives.value = stateRefs.lives.value - 1

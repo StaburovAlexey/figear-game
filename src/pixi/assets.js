@@ -24,6 +24,13 @@ import sun from '../assets/background/sun.png'
 import wallPixelGrey from '../assets/background/wall_pixel_grey.png'
 import wallPixel from '../assets/background/wall-pixel.png'
 import wall2 from '../assets/background/wall2.png'
+//Достопремечательности
+import alexabder_ryazanski from '../assets/background/attractions/alexabder_ryazanski.png'
+import circus from '../assets/background/attractions/circus.png'
+import esenin from '../assets/background/attractions/esenin.png'
+import kremlin from '../assets/background/attractions/kremlin.png'
+import kukolniy_teatr from '../assets/background/attractions/kukolniy_teatr.png'
+import teatr_drammy from '../assets/background/attractions/teatr_drammy.png'
 // Герой — движение
 import go1 from '../assets/hero/go_1.png'
 import go2 from '../assets/hero/go_2.png'
@@ -43,7 +50,6 @@ import jump7 from '../assets/hero/jump_7.png'
 import jump8 from '../assets/hero/jump_8.png'
 import jump9 from '../assets/hero/jump_9.png'
 export async function preloadAssets() {
-  console.log('Loaded road:', Assets.get('road'))
   await Assets.load([
     { alias: 'bar', src: bar },
     { alias: 'block', src: block },
@@ -69,6 +75,14 @@ export async function preloadAssets() {
     { alias: 'wall_pixel_grey', src: wallPixelGrey },
     { alias: 'wall_pixel', src: wallPixel },
     { alias: 'wall2', src: wall2 },
+    //Достопремечательности
+    { alias: 'alexabder_ryazanski', src: alexabder_ryazanski },
+    { alias: 'circus', src: circus },
+    { alias: 'esenin', src: esenin },
+    { alias: 'kremlin', src: kremlin },
+    { alias: 'kukolniy_teatr', src: kukolniy_teatr },
+    { alias: 'teatr_drammy', src: teatr_drammy },
+
     // Герой — движение
     { alias: 'go_1', src: go1 },
     { alias: 'go_2', src: go2 },

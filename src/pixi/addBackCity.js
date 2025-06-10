@@ -6,7 +6,7 @@ export async function createBackCity(app, speedGame) {
     height: app.screen.height,
     x: 0,
     y: 0,
-    speed: speedGame / 2,
+    speed: speedGame / 15,
   }
   const texture = Assets.get('houses3')
   const sprite = new Sprite(texture)
