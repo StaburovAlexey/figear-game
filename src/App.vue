@@ -1,23 +1,14 @@
 <script setup>
-  import { initPixiApp } from './pixi/appPixi'
   import { onMounted, ref } from 'vue'
-  import GameHeader from './components/GameHeader.vue'
-  import { preloadAssets } from './pixi/assets'
-  // реактивные данные
-  const score = ref(0)
-  const lives = ref(3)
-  const bullets = ref(10)
-  const coins = ref(0)
-  onMounted(async () => {
-    const gameContainer = document.getElementById('game-container')
-    await preloadAssets()
-    initPixiApp(gameContainer, { score, lives, bullets, coins })
-  })
+  import GameContainer from './components/game/GameContainer.vue'
+  import MenuComponent from './components/MenuComponent.vue'
+  onMounted(async () => {})
+
+  const startGame = ref(false)
 </script>
 
 <template>
-  <GameHeader :score="score" :lives="lives" :bullets="bullets" :coins="coins" />
-  <div id="game-container" class="game-container"></div>
+  <MenuComponent @start-game="startGame = true" v-if="!startGame" /><GameContainer v-else />
 </template>
 
 <style scoped>

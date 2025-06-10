@@ -46,7 +46,11 @@
     align-items: center;
     gap: 10px;
   }
-
+  .header-section {
+    font-family: 'pixel';
+    font-size: 20px;
+    font-weight: 600;
+  }
   .header-section.center {
     position: absolute;
     left: 50%;

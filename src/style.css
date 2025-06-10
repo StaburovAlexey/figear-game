@@ -1,4 +1,11 @@
-html{
+@font-face {
+    font-family: 'pixel';
+    src: url('./assets/fonts/pixel-ultima-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
   height: 100%;
   width: 100%;
 }
@@ -6,7 +13,7 @@ body {
   height: 100%;
   width: 100%;
 }
-#app{
+#app {
   height: 100%;
   width: 100%;
   display: flex;
