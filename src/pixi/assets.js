@@ -28,6 +28,14 @@ import sun from '../assets/background/sun.png'
 import wallPixelGrey from '../assets/background/wall_pixel_grey.png'
 import wallPixel from '../assets/background/wall-pixel.png'
 import wall2 from '../assets/background/wall2.png'
+//деревья
+import tree1 from '../assets/trees/tree1.png'
+import tree2 from '../assets/trees/tree2.png'
+import tree3 from '../assets/trees/tree3.png'
+import tree4 from '../assets/trees/tree4.png'
+import tree5 from '../assets/trees/tree5.png'
+import tree6 from '../assets/trees/tree6.png'
+import tree7 from '../assets/trees/tree7.png'
 //Достопремечательности
 import alexabder_ryazanski from '../assets/background/attractions/alexabder_ryazanski.png'
 import circus from '../assets/background/attractions/circus.png'
@@ -83,6 +91,14 @@ export async function preloadAssets() {
     { alias: 'wall_pixel_grey', src: wallPixelGrey },
     { alias: 'wall_pixel', src: wallPixel },
     { alias: 'wall2', src: wall2 },
+    //деревья
+    { alias: 'tree1', src: tree1 },
+    { alias: 'tree2', src: tree2 },
+    { alias: 'tree3', src: tree3 },
+    { alias: 'tree4', src: tree4 },
+    { alias: 'tree5', src: tree5 },
+    { alias: 'tree6', src: tree6 },
+    { alias: 'tree7', src: tree7 },
     //Достопремечательности
     { alias: 'alexabder_ryazanski', src: alexabder_ryazanski },
     { alias: 'circus', src: circus },

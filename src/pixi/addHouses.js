@@ -1,4 +1,4 @@
-import { Assets, Sprite, Container, Graphics } from 'pixi.js'
+import { Assets, Sprite, Container } from 'pixi.js'
 async function createHouse(app, nameAsset) {
   const texture = Assets.get(nameAsset)
   const sprite = new Sprite(texture)
