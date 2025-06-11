@@ -1,5 +1,5 @@
 import { Sprite, Assets } from 'pixi.js'
-
+import { addTaxi } from './addTaxi'
 export async function addObstacles(app, upperY, lowerY, heroHeight) {
   const obstacleWidth = heroHeight / 3
   const obstacleHeight = heroHeight / 3
@@ -30,23 +30,33 @@ export async function addObstacles(app, upperY, lowerY, heroHeight) {
   }
 
   function update(speed) {
+    const flatMapArray = [obstacles.lower, obstacles.upper]
+    const findTaxi = flatMapArray.find((el) => el?.type === 'taxi')
     for (const key of ['upper', 'lower']) {
       const obstacle = obstacles[key]
-
+      const lineY = key === 'upper' ? upperY : lowerY
       if (obstacle) {
-        obstacle.x -= speed
-
         // Если ушёл за экран — удалить
         if (obstacle.x + obstacle.width < 0) {
           app.stage.removeChild(obstacle)
           obstacles[key] = null
         }
+        if (findTaxi && obstacle.type === 'taxi') {
+          obstacle.x -= speed - 2
+        } else {
+          obstacle.x -= speed
+        }
       } else {
         // Если препятствия нет — шанс создать новое
         if (Math.random() < 0.02) {
-          // 2% шанс каждый кадр
-          const lineY = key === 'upper' ? upperY : lowerY
-          obstacles[key] = createObstacle(lineY)
+          if (obstacles.lower?.type != 'taxi') {
+            obstacles[key] = createObstacle(lineY)
+          }
+        }
+        if (Math.random() < 0.002) {
+          if (!findTaxi) {
+            obstacles[key] = addTaxi(app, heroHeight, obstacleHeight, lineY, lowerY)
+          }
         }
       }
     }

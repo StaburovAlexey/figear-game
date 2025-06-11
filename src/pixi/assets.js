@@ -28,6 +28,9 @@ import sun from '../assets/background/sun.png'
 import wallPixelGrey from '../assets/background/wall_pixel_grey.png'
 import wallPixel from '../assets/background/wall-pixel.png'
 import wall2 from '../assets/background/wall2.png'
+//такси
+import taxi from '../assets/taxi/taxi.png'
+import warning from '../assets/taxi/beep.png'
 //деревья
 import tree1 from '../assets/trees/tree1.png'
 import tree2 from '../assets/trees/tree2.png'
@@ -91,6 +94,9 @@ export async function preloadAssets() {
     { alias: 'wall_pixel_grey', src: wallPixelGrey },
     { alias: 'wall_pixel', src: wallPixel },
     { alias: 'wall2', src: wall2 },
+    //такси
+    { alias: 'taxi', src: taxi },
+    { alias: 'warning', src: warning },
     //деревья
     { alias: 'tree1', src: tree1 },
     { alias: 'tree2', src: tree2 },
