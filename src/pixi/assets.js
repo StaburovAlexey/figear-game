@@ -6,13 +6,17 @@ import conus from '../assets/background/conus.png'
 import conus2 from '../assets/background/conus2.png'
 import dirt from '../assets/background/dirt.png'
 import hero from '../assets/background/hero.png'
-import house1 from '../assets/background/house1.png'
-import house2 from '../assets/background/house2.png'
-import house3 from '../assets/background/house3.png'
-import house4 from '../assets/background/house4.png'
-import house5 from '../assets/background/house5.png'
-import house6 from '../assets/background/house6.png'
-import house7 from '../assets/background/house7.png'
+import house1 from '../assets/houses/house1.png'
+import house2 from '../assets/houses/house2.png'
+import house3 from '../assets/houses/house3.png'
+import house4 from '../assets/houses/house4.png'
+import house5 from '../assets/houses/house5.png'
+import house6 from '../assets/houses/house6.png'
+import house7 from '../assets/houses/house7.png'
+import house8 from '../assets/houses/house8.png'
+import house9 from '../assets/houses/house9.png'
+import house10 from '../assets/houses/house10.png'
+import house11 from '../assets/houses/house11.png'
 import houses3 from '../assets/background/houses3.png'
 import iggy from '../assets/background/iggy.png'
 import karas from '../assets/background/karas.png'
@@ -64,6 +68,10 @@ export async function preloadAssets() {
     { alias: 'house5', src: house5 },
     { alias: 'house6', src: house6 },
     { alias: 'house7', src: house7 },
+    { alias: 'house8', src: house8 },
+    { alias: 'house9', src: house9 },
+    { alias: 'house10', src: house10 },
+    { alias: 'house11', src: house11 },
     { alias: 'houses3', src: houses3 },
     { alias: 'iggy', src: iggy },
     { alias: 'karas', src: karas },

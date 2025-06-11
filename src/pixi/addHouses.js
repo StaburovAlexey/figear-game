@@ -1,47 +1,77 @@
-import { Assets, Sprite, Container } from 'pixi.js'
+import { Assets, Sprite, Container, Graphics } from 'pixi.js'
 async function createHouse(app, nameAsset) {
   const texture = Assets.get(nameAsset)
   const sprite = new Sprite(texture)
   switch (nameAsset) {
     case 'house1':
-      sprite.width = app.screen.width / 2
-      sprite.height = app.screen.height / 1.4
-      sprite.y = app.screen.height / 10
+      sprite.width = app.screen.width / 1
+      sprite.height = app.screen.height / 1
+      sprite.y = app.screen.height / 1.1 - sprite.height
       return sprite
     case 'house2':
-      sprite.width = app.screen.width
-      sprite.height = app.screen.height * 1.7
-      sprite.y = -app.screen.height / 2.4
+      sprite.width = app.screen.width / 1
+      sprite.height = app.screen.height / 1
+      sprite.y = app.screen.height / 1.2 - sprite.height
       return sprite
     case 'house3':
-      sprite.width = app.screen.width / 2
-      sprite.height = app.screen.height / 1
-      sprite.y = -app.screen.height / 13
+      sprite.width = app.screen.width / 1.4
+      sprite.height = app.screen.height / 1.4
+      sprite.y = app.screen.height / 1.35 - sprite.height
       return sprite
     case 'house4':
-      sprite.width = app.screen.width / 2
-      sprite.height = app.screen.height / 1.1
-      sprite.y = -app.screen.height / 100
+      sprite.width = app.screen.width / 1.6
+      sprite.height = app.screen.height / 1.6
+      sprite.y = app.screen.height / 1.25 - sprite.height
       return sprite
     case 'house5':
-      sprite.width = app.screen.width / 2
-      sprite.height = app.screen.height / 1.6
-      sprite.y = app.screen.height / 10
+      sprite.width = app.screen.width / 1
+      sprite.height = app.screen.height / 1
+      sprite.y = app.screen.height / 1.25 - sprite.height
       return sprite
     case 'house6':
-      sprite.width = app.screen.width / 2
-      sprite.height = app.screen.height / 1.6
-      sprite.y = app.screen.height / 9
+      sprite.width = app.screen.width / 1.5
+      sprite.height = app.screen.height / 1.3
+      sprite.y = app.screen.height / 1.35 - sprite.height
       return sprite
     case 'house7':
-      sprite.width = app.screen.width / 2
+      sprite.width = app.screen.width / 1.5
       sprite.height = app.screen.height / 1.5
       sprite.y = app.screen.height / 25 + 17
+      return sprite
+    case 'house8':
+      sprite.width = app.screen.width / 0.8
+      sprite.height = app.screen.height / 0.8
+      sprite.y = app.screen.height / 1.25 - sprite.height
+      return sprite
+    case 'house9':
+      sprite.width = app.screen.width / 1
+      sprite.height = app.screen.height / 1
+      sprite.y = app.screen.height / 1.25 - sprite.height
+      return sprite
+    case 'house10':
+      sprite.width = app.screen.width / 0.9
+      sprite.height = app.screen.height / 0.9
+      sprite.y = app.screen.height / 1.25 - sprite.height
+      return sprite
+    case 'house11':
+      sprite.width = app.screen.width / 1
+      sprite.height = app.screen.height / 1
+      sprite.y = app.screen.height / 1.35 - sprite.height
       return sprite
     case 'karas':
       sprite.width = app.screen.width / 2
       sprite.height = app.screen.height / 1.2
       sprite.y = app.screen.height / 40
+      return sprite
+    case 'ozzy':
+      sprite.width = app.screen.width / 2
+      sprite.height = app.screen.height / 1.5
+      sprite.y = app.screen.height / 1.25 - sprite.height
+      return sprite
+    case 'iggy':
+      sprite.width = app.screen.width / 2
+      sprite.height = app.screen.height / 1.5
+      sprite.y = app.screen.height / 6
       return sprite
     default:
       sprite.width = app.screen.width / 2
@@ -70,11 +100,17 @@ async function createHouseGroup(app, houseNames) {
   return group
 }
 
-export async function createLayerHouses(app, speedGame) {
+export async function createLayerHouses(app) {
   const houseNames = [
+    'house8',
+    'house9',
+    'house10',
     'house1',
     'house2',
     'house3',
+    'house8',
+    'house9',
+    'house10',
     'ozzy',
     'house4',
     'house5',
@@ -82,6 +118,10 @@ export async function createLayerHouses(app, speedGame) {
     'house6',
     'house7',
     'karas',
+    'house8',
+    'house9',
+    'house10',
+    'house11',
   ]
 
   const group = await createHouseGroup(app, houseNames)
