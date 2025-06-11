@@ -11,7 +11,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   let isGameOver = false
   let gameOverText = null
   let hero, obstacles, background
-  const speedGame = 3
+  const speedGame = 10
 
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)
@@ -39,21 +39,23 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
     background = await addBackgrounds(app, speedGame)
 
-    obstacles = await addObstacles(app, speedGame, upperY, lowerY, heroHeight)
+    obstacles = await addObstacles(app, upperY, lowerY, heroHeight)
     hero = await addHero(app, speedGame, heroHeight, upperY, lowerY)
     addMoveHero(hero)
     app.stage.addChild(hero)
 
     app.ticker.start()
-    app.ticker.add(gameLoop)
+    app.ticker.add((time) => {
+      gameLoop(time.deltaTime)
+    })
   }
 
-  function gameLoop() {
+  function gameLoop(deltaTime) {
     if (isGameOver) return
     stateRefs.score.value += 0.05 * (speedGame / 1.2)
     hero.update()
-    obstacles.update()
-    background.update()
+    obstacles.update(deltaTime * speedGame)
+    background.update(deltaTime)
     if (!hero.flashing && colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
       stateRefs.lives.value = stateRefs.lives.value - 1

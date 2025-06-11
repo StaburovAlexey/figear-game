@@ -7,15 +7,20 @@ import { createLayerAtraction } from './addAttractions'
 export async function addBackgrounds(app, speed) {
   const speedGame = speed
   const attractionLayer = new Container()
-  let attraction
-  await createBackCity(app, speedGame)
+  let attraction, backCity, wall, layerHouses, roadLamps
+  backCity = await createBackCity(app)
   app.stage.addChild(attractionLayer)
   attraction = await createLayerAtraction(app, speedGame, attractionLayer)
-  await createWall(app, speedGame)
-  await createLayerHouses(app, speedGame)
-  await createRoadLamps(app, speedGame)
-  function update() {
-    attraction.update()
+  wall = await createWall(app, speedGame)
+  layerHouses = await createLayerHouses(app, speedGame)
+  roadLamps = await createRoadLamps(app, speedGame)
+  function update(deltaTime) {
+    const dx = deltaTime * speedGame
+    roadLamps.update(dx)
+    layerHouses.update(dx / 4)
+    wall.update(dx / 4)
+    attraction.update(dx / 12)
+    backCity.update(dx / 20)
   }
   return {
     update,

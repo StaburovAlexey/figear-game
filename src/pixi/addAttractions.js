@@ -52,9 +52,9 @@ export async function createLayerAtraction(app, speedGame, container) {
     'teatr_drammy',
   ]
 
-  async function update() {
+  async function update(speed) {
     if (attraction) {
-      attraction.x -= speedGame / 8
+      attraction.x -= speed
       if (attraction.x + attraction.width < 0) {
         app.stage.removeChild(attraction)
         attraction = null

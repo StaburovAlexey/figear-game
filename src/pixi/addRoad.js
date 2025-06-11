@@ -19,8 +19,9 @@ export async function createRoadLamps(app, speedGame) {
   sprite2.width = options.width
   sprite2.height = options.height
   app.stage.addChild(sprite, sprite2)
-  app.ticker.add((time) => {
-    const dx = time.deltaTime * options.speed
+
+  function update(speed) {
+    const dx = speed
     sprite.x -= dx
     sprite2.x -= dx
     if (sprite.x <= -app.screen.width) {
@@ -29,5 +30,6 @@ export async function createRoadLamps(app, speedGame) {
     if (sprite2.x <= -app.screen.width) {
       sprite2.x += app.screen.width * 2
     }
-  })
+  }
+  return { update }
 }

@@ -1,6 +1,6 @@
 import { Sprite, Assets } from 'pixi.js'
 
-export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
+export async function addObstacles(app, upperY, lowerY, heroHeight) {
   const obstacleWidth = heroHeight / 3
   const obstacleHeight = heroHeight / 3
   const textureNames = ['conus', 'conus2', 'block']
@@ -29,12 +29,12 @@ export async function addObstacles(app, speedGame, upperY, lowerY, heroHeight) {
     return sprite
   }
 
-  function update() {
+  function update(speed) {
     for (const key of ['upper', 'lower']) {
       const obstacle = obstacles[key]
 
       if (obstacle) {
-        obstacle.x -= speedGame
+        obstacle.x -= speed
 
         // Если ушёл за экран — удалить
         if (obstacle.x + obstacle.width < 0) {

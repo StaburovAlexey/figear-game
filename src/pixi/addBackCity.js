@@ -1,12 +1,11 @@
 import { Assets, Sprite } from 'pixi.js'
 
-export async function createBackCity(app, speedGame) {
+export async function createBackCity(app) {
   const options = {
     width: app.screen.width,
     height: app.screen.height,
     x: 0,
     y: 0,
-    speed: speedGame / 15,
   }
   const texture = Assets.get('houses3')
   const sprite = new Sprite(texture)
@@ -20,9 +19,8 @@ export async function createBackCity(app, speedGame) {
   sprite2.x = options.x + app.screen.width
   sprite2.y = options.y
   app.stage.addChild(sprite, sprite2)
-  app.ticker.add((time) => {
-    // Calculate the amount of distance to move the mountain groups per tick.
-    const dx = time.deltaTime * options.speed
+  function update(speed) {
+    const dx = speed
 
     // Move the mountain groups leftwards.
     sprite.x -= dx
@@ -35,5 +33,8 @@ export async function createBackCity(app, speedGame) {
     if (sprite2.x <= -app.screen.width) {
       sprite2.x += options.width * 2
     }
-  })
+  }
+  return {
+    update,
+  }
 }

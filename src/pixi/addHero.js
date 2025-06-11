@@ -29,7 +29,7 @@ export async function addHero(app, speedGame = 4, heroHeight, upperY, lowerY) {
 
   // Прыжковые переменные
   const obstacleWidth = heroHeight / 1.5
-  const jumpDistance = obstacleWidth * 7
+  const jumpDistance = obstacleWidth * 11
   const jumpHeight = heroHeight / 1.3
 
   const t = jumpDistance / speedGame

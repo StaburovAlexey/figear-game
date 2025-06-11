@@ -92,8 +92,9 @@ export async function createLayerHouses(app, speedGame) {
   group2.x = group.width
   group2.y = 0
 
-  app.ticker.add((time) => {
-    const dx = time.deltaTime * speedGame
+  app.stage.addChild(group, group2)
+  function update(speed) {
+    const dx = speed
 
     group.x -= dx
     group2.x -= dx
@@ -104,7 +105,8 @@ export async function createLayerHouses(app, speedGame) {
     if (group2.x <= -group2.width) {
       group2.x = group.x + group.width
     }
-  })
-
-  app.stage.addChild(group, group2)
+  }
+  return {
+    update,
+  }
 }
