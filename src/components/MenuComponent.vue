@@ -1,13 +1,24 @@
 <script setup>
   defineEmits(['start-game', 'list-lid', 'education', 'credits'])
+  defineProps({
+    gameStatus: {
+      type: String,
+      default: 'Main-menu',
+    },
+  })
 </script>
 <template>
   <div class="menu">
-    <ul class="menu__list">
+    <ul class="menu__list" v-if="gameStatus == 'Main-menu'">
       <li><button @click="$emit('start-game')">Новая игра</button></li>
       <li><button @click="$emit('list-lid')">Список лидеров</button></li>
       <li><button @click="$emit('education')">Обучение</button></li>
       <li><button @click="$emit('credits')">Команда</button></li>
+    </ul>
+    <ul class="menu__list" v-if="gameStatus == 'Game-over'">
+      <li><button @click="$emit('start-game')">Начать сначала</button></li>
+      <li><button @click="$emit('list-lid')">Сохранить результат</button></li>
+      <li><button @click="$emit('education')">Выход в меню</button></li>
     </ul>
   </div>
 </template>

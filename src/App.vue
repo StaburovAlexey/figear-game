@@ -3,12 +3,22 @@
   import GameContainer from './components/game/GameContainer.vue'
   import MenuComponent from './components/MenuComponent.vue'
   onMounted(async () => {})
-
+  const gameOver = (value) => {
+    if (value) {
+      startGame.value = false
+      gameStatus.value = 'Game-over'
+    }
+  }
   const startGame = ref(false)
+  const gameStatus = ref('Main-menu')
 </script>
 
 <template>
-  <MenuComponent @start-game="startGame = true" v-if="!startGame" /><GameContainer v-else />
+  <MenuComponent
+    @start-game="startGame = true"
+    v-if="!startGame"
+    :game-status="gameStatus"
+  /><GameContainer v-else @game-over="gameOver" />
 </template>
 
 <style scoped>

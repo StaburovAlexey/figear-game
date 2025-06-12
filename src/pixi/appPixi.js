@@ -17,6 +17,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   element.appendChild(app.canvas)
 
   async function startGame() {
+    stateRefs.gameOver.value = false
     stateRefs.lives.value = 3
     stateRefs.score.value = 0
     app.stage.removeChildren()
@@ -51,29 +52,24 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     if (!hero.flashing && colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
       stateRefs.lives.value = stateRefs.lives.value - 1
-      hero.invulnerable()
+
       if (stateRefs.lives.value <= 0) {
         gameOver()
+        return
       }
+      hero.invulnerable()
     }
   }
 
   function gameOver() {
-    console.log('🔥 gameOver вызван')
     if (isGameOver) return
-    isGameOver = true
+
     app.ticker.stop()
     app.ticker.remove(gameLoop)
-    app.stage.removeChildren()
-    gameOverText = new Text('GAME OVER\nPress Enter to Restart', {
-      fill: 'white',
-      fontSize: 40,
-      align: 'center',
-    })
-    gameOverText.anchor.set(0.5)
-    gameOverText.x = app.screen.width / 2
-    gameOverText.y = app.screen.height / 2
-    app.stage.addChild(gameOverText)
+    setTimeout(() => {
+      stateRefs.gameOver.value = true
+      isGameOver = true
+    }, 1000)
   }
 
   function restartGame() {

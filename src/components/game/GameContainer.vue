@@ -1,6 +1,6 @@
 <script setup>
   import { initPixiApp } from '../../pixi/appPixi'
-  import { onMounted, ref } from 'vue'
+  import { onMounted, ref, watch } from 'vue'
   import GameHeader from './GameHeader.vue'
   import { preloadAssets } from '../../pixi/assets'
   // реактивные данные
@@ -8,13 +8,18 @@
   const lives = ref(3)
   const bullets = ref(10)
   const coins = ref(0)
+  const gameOver = ref(false)
   const isLoading = ref(true) // прелоадер
+  const emit = defineEmits(['game-over'])
   onMounted(async () => {
     const gameContainer = document.getElementById('game-container')
     await preloadAssets()
 
     isLoading.value = false
-    initPixiApp(gameContainer, { score, lives, bullets, coins })
+    initPixiApp(gameContainer, { score, lives, bullets, coins, gameOver })
+  })
+  watch(gameOver, (newGameOver) => {
+    emit('game-over', newGameOver)
   })
 </script>
 
@@ -22,9 +27,7 @@
   <div class="container">
     <GameHeader :score="score" :lives="lives" :bullets="bullets" :coins="coins" v-if="!isLoading" />
     <div id="game-container" class="game-container">
-      <div id="game-container" class="game-container">
-        <div v-if="isLoading" class="preloader">Загрузка...</div>
-      </div>
+      <div v-if="isLoading" class="preloader">Загрузка...</div>
     </div>
   </div>
 </template>
