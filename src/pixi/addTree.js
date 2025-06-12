@@ -32,26 +32,30 @@ export function createLayerTree(app) {
   layerTree.x = 0
   layerTree.y = app.screen.height / 2.6
   app.stage.addChild(layerTree)
+  for (let i = 0; i <= 6; i++) {
+    if (i == 0) {
+      const sprite = createTreeGroup(app, 0)
+      groupsTrees.push(sprite)
+    } else {
+      const sprite = createTreeGroup(app, groupsTrees[i - 1].x + groupsTrees[i - 1].width)
+      groupsTrees.push(sprite)
+    }
+  }
+  layerTree.addChild(...groupsTrees)
   function update(speed) {
     const dx = speed
     layerTree.x -= dx
 
-    if (groupsTrees.length == 0) {
-      const sprite = createTreeGroup(app, 0)
+    const firstItem = groupsTrees[0].getGlobalPosition()
+    const lastItem = groupsTrees[groupsTrees.length - 1]
+    if (firstItem.x < app.screen.x && groupsTrees.length == 7) {
+      layerTree.removeChild(firstItem)
+      groupsTrees.shift()
+    }
+    if (7 != groupsTrees.length) {
+      const sprite = createTreeGroup(app, lastItem.x + lastItem.width)
       groupsTrees.push(sprite)
       layerTree.addChild(sprite)
-    } else {
-      const firstItem = groupsTrees[0].getGlobalPosition()
-      const lastItem = groupsTrees[groupsTrees.length - 1]
-      if (firstItem.x < app.screen.x && groupsTrees.length == 7) {
-        layerTree.removeChild(firstItem)
-        groupsTrees.shift()
-      }
-      if (7 != groupsTrees.length) {
-        const sprite = createTreeGroup(app, lastItem.x + lastItem.width)
-        groupsTrees.push(sprite)
-        layerTree.addChild(sprite)
-      }
     }
   }
   return {

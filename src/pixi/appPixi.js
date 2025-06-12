@@ -4,7 +4,7 @@ import { addMoon } from './addMoon'
 import { addBackgrounds } from './addBackgrounds'
 import { addHero } from './addHero'
 import { addObstacles } from './addBlocksOfRoad.js'
-
+import { count } from './addCountStart.js'
 export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   const app = new Application()
   const element = elementIdInit
@@ -12,15 +12,9 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   let gameOverText = null
   let hero, obstacles, background
   const speedGame = 10
-
+  let controlsAdded = false
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)
-
-  document.addEventListener('keydown', (e) => {
-    if (isGameOver && e.key === 'Enter') {
-      restartGame()
-    }
-  })
 
   async function startGame() {
     stateRefs.lives.value = 3
@@ -38,30 +32,28 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     await addStars(app)
 
     background = await addBackgrounds(app, speedGame)
-
     obstacles = await addObstacles(app, upperY, lowerY, heroHeight)
     hero = await addHero(app, speedGame, heroHeight, upperY, lowerY)
+
     addMoveHero(hero)
     app.stage.addChild(hero)
-
     app.ticker.start()
-    app.ticker.add((time) => {
-      gameLoop(time.deltaTime)
-    })
+    await count(app)
+    app.ticker.add(gameLoop)
   }
 
-  function gameLoop(deltaTime) {
+  function gameLoop(time) {
     if (isGameOver) return
     stateRefs.score.value += 0.05 * (speedGame / 1.2)
     hero.update()
-    obstacles.update(deltaTime * speedGame)
-    background.update(deltaTime)
+    obstacles.update(time.deltaTime * speedGame)
+    background.update(time.deltaTime)
     if (!hero.flashing && colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
       stateRefs.lives.value = stateRefs.lives.value - 1
       hero.invulnerable()
       if (stateRefs.lives.value <= 0) {
-        // gameOver()
+        gameOver()
       }
     }
   }
@@ -71,8 +63,8 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     if (isGameOver) return
     isGameOver = true
     app.ticker.stop()
+    app.ticker.remove(gameLoop)
     app.stage.removeChildren()
-
     gameOverText = new Text('GAME OVER\nPress Enter to Restart', {
       fill: 'white',
       fontSize: 40,
@@ -85,11 +77,29 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   }
 
   function restartGame() {
-    app.ticker.stop()
-    app.ticker.remove(gameLoop)
     startGame()
   }
+  function addMoveHero() {
+    if (controlsAdded) return
+    controlsAdded = true
 
+    document.addEventListener('keydown', (event) => {
+      const key = event.key
+
+      if (isGameOver && key === 'Enter') {
+        restartGame()
+      }
+
+      if (key === 'ArrowUp' || key === 'ArrowDown') {
+        hero.move(key)
+      }
+
+      if (key === ' ' || key === 'Space') {
+        hero.jump()
+      }
+    })
+  }
+  addHero()
   await startGame()
 }
 
@@ -113,18 +123,4 @@ function colisionCheck(hero, obstacles) {
       return true
     }
   }
-}
-
-function addMoveHero(hero) {
-  document.addEventListener('keydown', (event) => {
-    const key = event.key
-
-    if (key === 'ArrowUp' || key === 'ArrowDown') {
-      hero.move(key)
-    }
-
-    if (key === ' ' || key === 'Space') {
-      hero.jump()
-    }
-  })
 }
