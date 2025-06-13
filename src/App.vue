@@ -1,15 +1,28 @@
 <script setup>
-  import { onMounted, ref } from 'vue'
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
   import GameContainer from './components/game/GameContainer.vue'
   import MenuComponent from './components/MenuComponent.vue'
   import LeaderboardComponent from './components/LeaderboardComponent.vue'
   import SaveResultComponent from './components/SaveResultComponent.vue'
-  onMounted(async () => {})
-
+  import OrientationGuard from './components/OrientationGuard.vue'
+  onMounted(async () => {
+    checkOrientation()
+    window.addEventListener('orientationchange', checkOrientation)
+    window.addEventListener('resize', checkOrientation) // на случай поворота без события orientationchange
+  })
+  onBeforeUnmount(() => {
+    window.removeEventListener('orientationchange', checkOrientation)
+    window.removeEventListener('resize', checkOrientation)
+  })
+  const showOverlay = ref(false)
   const gameStatus = ref('Main-menu')
+  function checkOrientation() {
+    showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
+  }
 </script>
 
 <template>
+  <OrientationGuard />
   <LeaderboardComponent @exit-menu="gameStatus = 'Main-menu'" v-if="gameStatus == 'Leaderboard'" />
   <SaveResultComponent v-if="gameStatus == 'Save-result'" @exit-menu="gameStatus = 'Main-menu'" />
   <MenuComponent

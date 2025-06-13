@@ -13,14 +13,14 @@
       <span class="label">SCORE</span>
       <span class="value">{{ Math.floor(score) }}</span>
     </div>
-    <div class="header-section center">
-      <img src="" alt="heart" class="icon" />
+    <div class="header-section right">
+      <img src="../../assets/heart.svg" alt="heart" class="icon" />
       <span class="value">x{{ lives }}</span>
     </div>
-    <div class="header-section right">
+    <!-- <div class="header-section right">
       <span class="value">{{ bullets }}</span>
       <img src="" alt="bullet" class="icon" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -31,7 +31,7 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 5px 20px 0;
     font-family: monospace;
     font-size: 24px;
     color: #f7e4cc;
@@ -39,6 +39,9 @@
     position: absolute;
     top: 0;
     right: 0;
+    font-family: 'pixel';
+    background-color: rgba(0, 0, 0, 0.5); /* ← затемнённый фон */
+    backdrop-filter: blur(2px); /* ← лёгкий блюр по желанию */
   }
 
   .header-section {
@@ -48,7 +51,7 @@
   }
   .header-section {
     font-family: 'pixel';
-    font-size: 20px;
+    font-size: 26px;
     font-weight: 600;
   }
   .header-section.center {
