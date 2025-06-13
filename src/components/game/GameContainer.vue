@@ -48,9 +48,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1e1e1e;
+    background-color: transparent;
     font-size: 24px;
-    color: #333;
+    color: white;
   }
   .preloader {
     position: absolute;

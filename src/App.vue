@@ -2,23 +2,25 @@
   import { onMounted, ref } from 'vue'
   import GameContainer from './components/game/GameContainer.vue'
   import MenuComponent from './components/MenuComponent.vue'
+  import LeaderboardComponent from './components/LeaderboardComponent.vue'
+  import SaveResultComponent from './components/SaveResultComponent.vue'
   onMounted(async () => {})
-  const gameOver = (value) => {
-    if (value) {
-      startGame.value = false
-      gameStatus.value = 'Game-over'
-    }
-  }
-  const startGame = ref(false)
+
   const gameStatus = ref('Main-menu')
 </script>
 
 <template>
+  <LeaderboardComponent @exit-menu="gameStatus = 'Main-menu'" v-if="gameStatus == 'Leaderboard'" />
+  <SaveResultComponent v-if="gameStatus == 'Save-result'" @exit-menu="gameStatus = 'Main-menu'" />
   <MenuComponent
-    @start-game="startGame = true"
-    v-if="!startGame"
+    @start-game="gameStatus = 'Start-game'"
+    @exit-menu="gameStatus = 'Main-menu'"
+    @liderboard="gameStatus = 'Leaderboard'"
+    @save-result="gameStatus = 'Save-result'"
+    v-if="gameStatus == 'Main-menu' || gameStatus == 'Game-over'"
     :game-status="gameStatus"
-  /><GameContainer v-else @game-over="gameOver" />
+  />
+  <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameStatus = 'Game-over'" />
 </template>
 
 <style scoped>

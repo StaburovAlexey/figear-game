@@ -1,4 +1,4 @@
-import { Application, Text } from 'pixi.js'
+import { Application } from 'pixi.js'
 import { addStars } from './addStars'
 import { addMoon } from './addMoon'
 import { addBackgrounds } from './addBackgrounds'
@@ -9,7 +9,6 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   const app = new Application()
   const element = elementIdInit
   let isGameOver = false
-  let gameOverText = null
   let hero, obstacles, background
   const speedGame = 10
   let controlsAdded = false
@@ -23,7 +22,6 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     app.stage.removeChildren()
     app.stage.alpha = 1
     isGameOver = false
-    gameOverText = null
 
     const heroHeight = app.screen.height / 3
     const upperY = (app.screen.height - heroHeight) / 1.19
