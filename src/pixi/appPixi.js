@@ -10,7 +10,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   const element = elementIdInit
   let isGameOver = false
   let hero, obstacles, background
-  const speedGame = 10
+  let speedGame = 0
   let controlsAdded = false
   await app.init({ background: '#021f4b', resizeTo: element })
   element.appendChild(app.canvas)
@@ -30,7 +30,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     await addMoon(app)
     await addStars(app)
 
-    background = await addBackgrounds(app, speedGame)
+    background = await addBackgrounds(app)
     obstacles = await addObstacles(app, upperY, lowerY, heroHeight)
     hero = await addHero(app, speedGame, heroHeight, upperY, lowerY)
 
@@ -38,34 +38,38 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     app.stage.addChild(hero)
     app.ticker.start()
     await count(app)
+    timer()
     app.ticker.add(gameLoop)
   }
 
   function gameLoop(time) {
     if (isGameOver) return
+    if (speedGame < 5) {
+      speedGame = speedGame + 0.02
+    }
     stateRefs.score.value += 0.05 * (speedGame / 1.2)
-    hero.update()
+    hero.update(speedGame)
     obstacles.update(time.deltaTime * speedGame)
-    background.update(time.deltaTime)
+    background.update(time.deltaTime * speedGame)
     if (!hero.flashing && colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
       stateRefs.lives.value = stateRefs.lives.value - 1
 
       if (stateRefs.lives.value <= 0) {
-        gameOver()
-        return
+        // gameOver()
+        // return
       }
       hero.invulnerable()
     }
   }
 
-  function gameOver() {
+  function gameOver(finish = false) {
     if (isGameOver) return
 
     app.ticker.stop()
     app.ticker.remove(gameLoop)
     setTimeout(() => {
-      stateRefs.gameOver.value = true
+      stateRefs.gameOver.value = finish ? 'Finish-game' : 'Game-over'
       isGameOver = true
     }, 1000)
   }
@@ -92,6 +96,16 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
         hero.jump()
       }
     })
+  }
+  function timer() {
+    const timerShift = setInterval(() => {
+      stateRefs.seconds.value--
+
+      if (stateRefs.seconds.value === 0) {
+        clearInterval(timerShift)
+        gameOver(true)
+      }
+    }, 1000)
   }
   addHero()
   await startGame()

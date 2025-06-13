@@ -9,14 +9,19 @@
 </script>
 <template>
   <div class="menu">
-    <h2 style="margin-bottom: 0; margin-top: 30px" v-if="gameStatus == 'Game-over'">Конец игры</h2>
+    <h2
+      style="margin-bottom: 0; margin-top: 30px"
+      v-if="gameStatus == 'Game-over' || gameStatus == 'Finish-game'"
+    >
+      {{ gameStatus == 'Game-over' ? 'Вы опоздали!' : 'Вы пришли вовремя!' }}
+    </h2>
     <ul class="menu__list" v-if="gameStatus == 'Main-menu'">
       <li><button @click="$emit('start-game')">Новая игра</button></li>
       <li><button @click="$emit('liderboard')">Список лидеров</button></li>
       <li><button @click="$emit('education')">Обучение</button></li>
       <li><button @click="$emit('credits')">Команда</button></li>
     </ul>
-    <ul class="menu__list" v-if="gameStatus == 'Game-over'">
+    <ul class="menu__list" v-if="gameStatus == 'Game-over' || gameStatus == 'Finish-game'">
       <li><button @click="$emit('start-game')">Начать сначала</button></li>
       <li><button @click="$emit('save-result')">Сохранить результат</button></li>
       <li><button @click="$emit('exit-menu')">Выход в меню</button></li>

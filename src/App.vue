@@ -19,6 +19,9 @@
   function checkOrientation() {
     showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
   }
+  function gameOver(value) {
+    gameStatus.value = value
+  }
 </script>
 
 <template>
@@ -30,10 +33,10 @@
     @exit-menu="gameStatus = 'Main-menu'"
     @liderboard="gameStatus = 'Leaderboard'"
     @save-result="gameStatus = 'Save-result'"
-    v-if="gameStatus == 'Main-menu' || gameStatus == 'Game-over'"
+    v-if="gameStatus == 'Main-menu' || gameStatus == 'Game-over' || gameStatus == 'Finish-game'"
     :game-status="gameStatus"
   />
-  <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameStatus = 'Game-over'" />
+  <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameOver" :gameStatus />
 </template>
 
 <style scoped>

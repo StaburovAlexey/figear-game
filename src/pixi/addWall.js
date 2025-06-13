@@ -1,12 +1,11 @@
 import { Assets, Sprite } from 'pixi.js'
 
-export async function createWall(app, speedGame) {
+export async function createWall(app) {
   const options = {
     width: app.screen.width,
     height: app.screen.height / 1.5,
     x: 0,
     y: app.screen.height / 5,
-    speed: speedGame,
   }
   const texture = Assets.get('wall_pixel_grey')
   const sprite = new Sprite(texture)

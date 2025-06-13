@@ -41,7 +41,7 @@ async function createHouse(app, nameAsset) {
   }
 }
 
-export async function createLayerAtraction(app, speedGame, container) {
+export async function createLayerAtraction(app, container) {
   let attraction = null
   const houseNames = [
     'alexabder_ryazanski',

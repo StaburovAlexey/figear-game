@@ -1,11 +1,10 @@
 import { Assets, Sprite } from 'pixi.js'
-export async function createRoadLamps(app, speedGame) {
+export async function createRoadLamps(app) {
   const options = {
     width: app.screen.width,
     height: app.screen.height * 1.2,
     x: 0,
     y: app.screen.height - app.screen.height * 1.2,
-    speed: speedGame * 2,
   }
   const texture = Assets.get('road_lamps')
   const sprite = new Sprite(texture)

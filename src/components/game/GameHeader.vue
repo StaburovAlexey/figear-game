@@ -1,9 +1,13 @@
 <script setup>
-  defineProps({
+  import { computed } from 'vue'
+  const props = defineProps({
     score: Number,
     lives: Number,
-    bullets: Number,
     coins: Number,
+    seconds: Number,
+  })
+  const time = computed(() => {
+    return `${Math.floor((props.seconds % 3600) / 60)} : ${props.seconds % 60}`
   })
 </script>
 
@@ -13,14 +17,13 @@
       <span class="label">SCORE</span>
       <span class="value">{{ Math.floor(score) }}</span>
     </div>
+    <div class="header-section center">
+      <span class="value">{{ time }}</span>
+    </div>
     <div class="header-section right">
       <img src="../../assets/heart.svg" alt="heart" class="icon" />
       <span class="value">x{{ lives }}</span>
     </div>
-    <!-- <div class="header-section right">
-      <span class="value">{{ bullets }}</span>
-      <img src="" alt="bullet" class="icon" />
-    </div> -->
   </div>
 </template>
 
