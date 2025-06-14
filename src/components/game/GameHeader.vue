@@ -3,7 +3,7 @@
   const props = defineProps({
     score: Number,
     lives: Number,
-    coins: Number,
+    bonus: Number,
     seconds: Number,
   })
   const time = computed(() => {

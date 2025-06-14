@@ -111,33 +111,34 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
       }
     }, 1000)
   }
-  addHero()
-  await startGame()
-}
+  function colisionCheck(hero, obstacles, app) {
+    if (hero.isJumping) return
 
-function colisionCheck(hero, obstacles, app) {
-  if (hero.isJumping) return
+    const heroBounds = hero.getBounds()
+    const heroBottomY = heroBounds.y + heroBounds.height
 
-  const heroBounds = hero.getBounds()
-  const heroBottomY = heroBounds.y + heroBounds.height
+    for (const block of obstacles.blocks) {
+      if (block.collected) continue
+      const blockBounds = block.getBounds()
+      const blockBottomY = blockBounds.y + blockBounds.height
 
-  for (const block of obstacles.blocks) {
-    const blockBounds = block.getBounds()
-    const blockBottomY = blockBounds.y + blockBounds.height
+      const isBottomAligned = Math.abs(heroBottomY - blockBottomY) < 10
 
-    const isBottomAligned = Math.abs(heroBottomY - blockBottomY) < 10
+      const isXOverlap =
+        heroBounds.x + heroBounds.width > blockBounds.x &&
+        heroBounds.x < blockBounds.x + blockBounds.width
 
-    const isXOverlap =
-      heroBounds.x + heroBounds.width > blockBounds.x &&
-      heroBounds.x < blockBounds.x + blockBounds.width
-
-    if (isBottomAligned && isXOverlap && block.type == 'bonus') {
-      app.stage.removeChild(block)
-      console.log('blocks', obstacles.blocks)
-      return false
-    }
-    if (isBottomAligned && isXOverlap && block.type !== 'bonus') {
-      return true
+      if (isBottomAligned && isXOverlap && block.type == 'bonus') {
+        block.collected = true
+        app.stage.removeChild(block)
+        stateRefs.bonus.value = stateRefs.bonus.value + 1
+        return false
+      }
+      if (isBottomAligned && isXOverlap && block.type !== 'bonus') {
+        return true
+      }
     }
   }
+  addHero()
+  await startGame()
 }

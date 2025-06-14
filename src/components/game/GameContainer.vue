@@ -7,7 +7,7 @@
   const score = ref(0)
   const lives = ref(3)
   const seconds = ref(300)
-  const coins = ref(0)
+  const bonus = ref(0)
   const gameOver = ref(false)
   const isLoading = ref(true) // прелоадер
   const emit = defineEmits(['game-over'])
@@ -16,7 +16,7 @@
     await preloadAssets()
 
     isLoading.value = false
-    initPixiApp(gameContainer, { score, lives, seconds, coins, gameOver })
+    initPixiApp(gameContainer, { score, lives, seconds, bonus, gameOver })
   })
   watch(gameOver, (newGameOver) => {
     emit('game-over', newGameOver)
@@ -25,7 +25,7 @@
 
 <template>
   <div class="container">
-    <GameHeader :score="score" :lives="lives" :seconds="seconds" :coins="coins" v-if="!isLoading" />
+    <GameHeader :score="score" :lives="lives" :seconds="seconds" :bonus="bonus" v-if="!isLoading" />
     <div id="game-container" class="game-container">
       <div v-if="isLoading" class="preloader">Загрузка...</div>
     </div>
