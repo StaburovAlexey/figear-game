@@ -101,6 +101,9 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     const timerShift = setInterval(() => {
       stateRefs.seconds.value--
 
+      if (stateRefs.seconds.value % 0.5 === 0 && speedGame < 12) {
+        speedGame = speedGame + 0.3
+      }
       if (stateRefs.seconds.value === 0) {
         clearInterval(timerShift)
         gameOver(true)
