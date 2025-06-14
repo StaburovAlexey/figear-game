@@ -51,7 +51,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     hero.update(speedGame)
     obstacles.update(time.deltaTime * speedGame)
     background.update(time.deltaTime * speedGame)
-    if (!hero.flashing && colisionCheck(hero, obstacles)) {
+    if (!hero.flashing && colisionCheck(hero, obstacles, app)) {
       console.log('💥 Столкновение')
       speedGame = 0
       stateRefs.lives.value = stateRefs.lives.value - 1
@@ -115,7 +115,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   await startGame()
 }
 
-function colisionCheck(hero, obstacles) {
+function colisionCheck(hero, obstacles, app) {
   if (hero.isJumping) return
 
   const heroBounds = hero.getBounds()
@@ -131,7 +131,12 @@ function colisionCheck(hero, obstacles) {
       heroBounds.x + heroBounds.width > blockBounds.x &&
       heroBounds.x < blockBounds.x + blockBounds.width
 
-    if (isBottomAligned && isXOverlap) {
+    if (isBottomAligned && isXOverlap && block.type == 'bonus') {
+      app.stage.removeChild(block)
+      console.log('blocks', obstacles.blocks)
+      return false
+    }
+    if (isBottomAligned && isXOverlap && block.type !== 'bonus') {
       return true
     }
   }

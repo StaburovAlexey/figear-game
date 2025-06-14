@@ -72,7 +72,7 @@ export async function addObstacles(app, upperY, lowerY, heroHeight) {
       if (!hasBlockOrTaxi && !hasTaxiLowerLine && Math.random() < 0.02) {
         list.push(createObstacle(lineY))
       }
-      if (!hasBonus && Math.random() < 0.002) {
+      if (!hasBonus && Math.random() < 0.0001) {
         list.push(createBonus(lineY))
       }
 
