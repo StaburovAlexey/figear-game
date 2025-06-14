@@ -31,6 +31,11 @@ import wall2 from '../assets/background/wall2.png'
 //такси
 import taxi from '../assets/taxi/taxi.png'
 import warning from '../assets/taxi/beep.png'
+//бонус
+import bonus1 from '../assets/bonus/bonus1.png'
+import bonus2 from '../assets/bonus/bonus2.png'
+import bonus3 from '../assets/bonus/bonus3.png'
+
 //деревья
 import tree1 from '../assets/trees/tree1.png'
 import tree2 from '../assets/trees/tree2.png'
@@ -97,6 +102,10 @@ export async function preloadAssets() {
     //такси
     { alias: 'taxi', src: taxi },
     { alias: 'warning', src: warning },
+    ///бонус
+    { alias: 'bonus1', src: bonus1 },
+    { alias: 'bonus2', src: bonus2 },
+    { alias: 'bonus3', src: bonus3 },
     //деревья
     { alias: 'tree1', src: tree1 },
     { alias: 'tree2', src: tree2 },
