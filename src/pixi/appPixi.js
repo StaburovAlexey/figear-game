@@ -47,7 +47,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     if (speedGame < 5) {
       speedGame = speedGame + 0.02
     }
-    stateRefs.score.value += 0.05 * (speedGame / 1.2)
+    stateRefs.score.value += 0.01 * (speedGame / 1.2)
     hero.update(speedGame)
     obstacles.update(time.deltaTime * speedGame)
     background.update(time.deltaTime * speedGame)
@@ -132,6 +132,10 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
         block.collected = true
         app.stage.removeChild(block)
         stateRefs.bonus.value = stateRefs.bonus.value + 1
+        if (stateRefs.bonus.value == 10) {
+          stateRefs.bonus.value = 0
+          stateRefs.lives.value++
+        }
         return false
       }
       if (isBottomAligned && isXOverlap && block.type !== 'bonus') {

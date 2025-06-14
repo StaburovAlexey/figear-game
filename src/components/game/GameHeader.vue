@@ -20,6 +20,10 @@
     <div class="header-section center">
       <span class="value">{{ time }}</span>
     </div>
+    <div class="header-section bonus">
+      <img src="../../assets/bonus/bonus1.png" alt="heart" class="icon" />
+      <span class="value">x{{ bonus }}</span>
+    </div>
     <div class="header-section right">
       <img src="../../assets/heart.svg" alt="heart" class="icon" />
       <span class="value">x{{ lives }}</span>
@@ -62,7 +66,10 @@
     left: 50%;
     transform: translateX(-50%);
   }
-
+  .header-section.bonus {
+    position: absolute;
+    right: 110px;
+  }
   .coin-section {
     position: absolute;
     right: 20px;
