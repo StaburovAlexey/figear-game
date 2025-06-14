@@ -32,7 +32,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
     background = await addBackgrounds(app)
     obstacles = await addObstacles(app, upperY, lowerY, heroHeight)
-    hero = await addHero(app, speedGame, heroHeight, upperY, lowerY)
+    hero = await addHero(heroHeight, upperY, lowerY)
 
     addMoveHero(hero)
     app.stage.addChild(hero)
@@ -93,7 +93,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
       }
 
       if (key === ' ' || key === 'Space') {
-        hero.jump()
+        hero.jump(speedGame)
       }
     })
   }
