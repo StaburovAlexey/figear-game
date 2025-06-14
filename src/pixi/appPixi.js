@@ -53,11 +53,12 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     background.update(time.deltaTime * speedGame)
     if (!hero.flashing && colisionCheck(hero, obstacles)) {
       console.log('💥 Столкновение')
+      speedGame = 0
       stateRefs.lives.value = stateRefs.lives.value - 1
 
       if (stateRefs.lives.value <= 0) {
-        // gameOver()
-        // return
+        gameOver()
+        return
       }
       hero.invulnerable()
     }

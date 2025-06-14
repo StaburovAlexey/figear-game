@@ -13,7 +13,7 @@
       style="margin-bottom: 0; margin-top: 30px"
       v-if="gameStatus == 'Game-over' || gameStatus == 'Finish-game'"
     >
-      {{ gameStatus == 'Game-over' ? 'Вы опоздали!' : 'Вы пришли вовремя!' }}
+      {{ gameStatus == 'Game-over' ? 'Вы проиграли!' : 'Вы пришли вовремя!' }}
     </h2>
     <ul class="menu__list" v-if="gameStatus == 'Main-menu'">
       <li><button @click="$emit('start-game')">Новая игра</button></li>
