@@ -26,7 +26,7 @@ export async function addHero(heroHeight, upperY, lowerY) {
 
   const scale = heroHeight / hero.height
   hero.scale.set(scale)
-  hero.x = 50
+  hero.x = 100
 
   const jumpHeight = heroHeight / 1.3
   const jumpDistance = (heroHeight / 1.5) * 11
@@ -39,7 +39,6 @@ export async function addHero(heroHeight, upperY, lowerY) {
   hero._gravity = 0
 
   hero.zIndex = 2
-
 
   hero.update = () => {
     if (hero.isJumping) {
@@ -82,7 +81,6 @@ export async function addHero(heroHeight, upperY, lowerY) {
       console.log(`Герой приземлится примерно на x = ${(hero.x + dx).toFixed(2)}`)
     }
   }
-
 
   hero.move = (key) => {
     if (key === 'ArrowUp') {

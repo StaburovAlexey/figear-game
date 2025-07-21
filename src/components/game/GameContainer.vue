@@ -3,10 +3,11 @@
   import { onMounted, ref, watch } from 'vue'
   import GameHeader from './GameHeader.vue'
   import { preloadAssets } from '../../pixi/assets'
+  import GameControls from './GameControls.vue'
   // реактивные данные
   const score = ref(0)
   const lives = ref(3)
-  const seconds = ref(300)
+  const seconds = ref(180)
   const bonus = ref(0)
   const gameOver = ref(false)
   const isLoading = ref(true) // прелоадер
@@ -29,6 +30,7 @@
     <div id="game-container" class="game-container">
       <div v-if="isLoading" class="preloader">Загрузка...</div>
     </div>
+    <GameControls />
   </div>
 </template>
 
