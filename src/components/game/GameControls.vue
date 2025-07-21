@@ -1,28 +1,20 @@
 <script setup>
   import { defineEmits } from 'vue'
 
-  const emit = defineEmits(['move-up', 'move-down', 'jump'])
+  const emit = defineEmits(['move'])
 
-  function moveUp() {
-    emit('move-up')
-  }
-
-  function moveDown() {
-    emit('move-down')
-  }
-
-  function jump() {
-    emit('jump')
+  function emitMove(direction) {
+    emit('move', direction)
   }
 </script>
 <template>
   <div class="controls">
     <div class="left-controls">
-      <button class="control-button" @click="moveUp">&#9650;</button>
-      <button class="control-button" @click="moveDown">&#9660;</button>
+      <button class="control-button" @click="emitMove('ArrowUp')">&#9650;</button>
+      <button class="control-button" @click="emitMove('ArrowDown')">&#9660;</button>
     </div>
     <div class="right-controls">
-      <button class="control-button jump" @click="jump">Jump</button>
+      <button class="control-button jump" @click="emitMove('Jump')">Jump</button>
     </div>
   </div>
 </template>

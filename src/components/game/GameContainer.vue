@@ -12,12 +12,20 @@
   const gameOver = ref(false)
   const isLoading = ref(true) // прелоадер
   const emit = defineEmits(['game-over'])
+  let pixiApp = null
+
+  function moveHero(direction) {
+    console.log('direction', direction)
+    if (pixiApp) {
+      pixiApp.moveHeroTapWindow(direction)
+    }
+  }
   onMounted(async () => {
     const gameContainer = document.getElementById('game-container')
     await preloadAssets()
 
     isLoading.value = false
-    initPixiApp(gameContainer, { score, lives, seconds, bonus, gameOver })
+    pixiApp = await initPixiApp(gameContainer, { score, lives, seconds, bonus, gameOver })
   })
   watch(gameOver, (newGameOver) => {
     emit('game-over', newGameOver)
@@ -30,7 +38,7 @@
     <div id="game-container" class="game-container">
       <div v-if="isLoading" class="preloader">Загрузка...</div>
     </div>
-    <GameControls />
+    <GameControls v-if="!isLoading" @move="moveHero" />
   </div>
 </template>
 

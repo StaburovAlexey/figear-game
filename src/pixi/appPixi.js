@@ -34,7 +34,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
     obstacles = await addObstacles(app, upperY, lowerY, heroHeight)
     hero = await addHero(heroHeight, upperY, lowerY)
 
-    addMoveHero(hero)
+    addMoveHero()
     app.stage.addChild(hero)
     app.ticker.start()
     await count(app)
@@ -77,6 +77,17 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
   function restartGame() {
     startGame()
+  }
+
+  function moveHeroTapWindow(directions) {
+    console.log('🚀 moveHeroTapWindow', directions)
+    if (directions === 'ArrowUp' || directions === 'ArrowDown') {
+      hero.move(directions)
+    }
+
+    if (directions === 'Jump') {
+      hero.jump(speedGame)
+    }
   }
   function addMoveHero() {
     if (controlsAdded) return
@@ -145,4 +156,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   }
   addHero()
   await startGame()
+  return {
+    moveHeroTapWindow,
+  }
 }
