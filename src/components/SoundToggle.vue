@@ -1,3 +1,60 @@
+<script setup>
+  import { ref, onMounted, onBeforeUnmount, watchEffect } from 'vue'
+  import themeMusic from '../assets/cut_scene/PixelRush.mp3'
+  import { sound } from '@pixi/sound'
+  const props = defineProps({
+    gameStatus: String,
+  })
+
+  const audio = new Audio(themeMusic)
+  const isPlaying = ref(false)
+  const hasError = ref(false)
+  watchEffect(() => {
+    if (props.gameStatus === 'Game-over') {
+      audio.pause()
+      audio.currentTime = 0
+    } else {
+      if (isPlaying.value) {
+        audio.play()
+      }
+    }
+  })
+  onMounted(() => {
+    audio.loop = true
+    audio.volume = 0.2
+
+    audio
+      .play()
+      .then(() => {
+        isPlaying.value = true
+        hasError.value = false
+      })
+      .catch((err) => {
+        console.warn('Autoplay blocked:', err)
+        isPlaying.value = false
+        hasError.value = true
+        audio.pause()
+        sound.muteAll()
+      })
+  })
+
+  onBeforeUnmount(() => {
+    audio.pause()
+  })
+
+  function toggleAudio() {
+    if (isPlaying.value) {
+      audio.volume = 0
+      isPlaying.value = false
+      sound.muteAll()
+    } else {
+      audio.volume = 0.2
+      isPlaying.value = true
+      audio.play()
+      sound.unmuteAll()
+    }
+  }
+</script>
 <!-- components/SoundToggle.vue -->
 <template>
   <div class="sound-control">
@@ -19,71 +76,11 @@
       </svg>
     </button>
 
-    <div v-if="hasError" class="tooltip">
+    <div v-if.v-once="!isPlaying" class="tooltip">
       Мы очень старались над музыкой — пожалуйста, включите звук!
     </div>
   </div>
 </template>
-
-<script setup>
-  import { ref, onMounted, onBeforeUnmount, watchEffect } from 'vue'
-  import themeMusic from '../assets/cut_scene/PixelRush.mp3'
-  const props = defineProps({
-    gameStatus: String,
-  })
-
-  const audio = new Audio(themeMusic)
-  const isPlaying = ref(false)
-  const hasError = ref(false)
-  watchEffect(() => {
-    if (props.gameStatus === 'Game-over') {
-      audio.pause()
-      audio.currentTime = 0
-    } else {
-      audio.play()
-    }
-  })
-  onMounted(() => {
-    audio.loop = true
-    audio.volume = 0.2
-
-    audio
-      .play()
-      .then(() => {
-        isPlaying.value = true
-        hasError.value = false
-      })
-      .catch((err) => {
-        console.warn('Autoplay blocked:', err)
-        isPlaying.value = false
-        hasError.value = true
-        audio.pause()
-      })
-  })
-
-  onBeforeUnmount(() => {
-    audio.pause()
-  })
-
-  function toggleAudio() {
-    if (isPlaying.value) {
-      audio.pause()
-      isPlaying.value = false
-    } else {
-      audio
-        .play()
-        .then(() => {
-          isPlaying.value = true
-          hasError.value = false
-        })
-        .catch((err) => {
-          console.warn('Play failed:', err)
-          hasError.value = true
-          isPlaying.value = false
-        })
-    }
-  }
-</script>
 
 <style scoped>
   .sound-control {
@@ -121,7 +118,7 @@
     color: #fff;
     padding: 6px 10px;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 10px;
     margin-top: 4px;
     max-width: 50vw;
     text-align: center;

@@ -73,7 +73,7 @@ import jump9 from '../assets/hero/jump_9.png'
 import jumpSoundSrc from '../assets/cut_scene/jump.wav'
 import smashSoundSrc from '../assets/cut_scene/smash.wav'
 import gameOverSoundSrc from '../assets/cut_scene/game_over.wav'
-export async function preloadAssets() {
+export async function preloadAssets(muteAudio) {
   await Assets.load([
     { alias: 'bar', src: bar },
     { alias: 'block', src: block },
@@ -158,6 +158,6 @@ export async function preloadAssets() {
   sound.add('game_over', {
     url: gameOverSoundSrc,
     preload: true,
-    volume: 0.6,
+    volume: 0.4,
   })
 }
