@@ -26,6 +26,7 @@
 
     isLoading.value = false
     pixiApp = await initPixiApp(gameContainer, { score, lives, seconds, bonus, gameOver })
+    
   })
   watch(gameOver, (newGameOver) => {
     emit('game-over', newGameOver)

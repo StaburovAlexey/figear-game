@@ -5,6 +5,7 @@
   import LeaderboardComponent from './components/LeaderboardComponent.vue'
   import SaveResultComponent from './components/SaveResultComponent.vue'
   import OrientationGuard from './components/OrientationGuard.vue'
+  import SoundToggle from './components/SoundToggle.vue'
   onMounted(async () => {
     checkOrientation()
     window.addEventListener('orientationchange', checkOrientation)
@@ -33,10 +34,16 @@
     @exit-menu="gameStatus = 'Main-menu'"
     @liderboard="gameStatus = 'Leaderboard'"
     @save-result="gameStatus = 'Save-result'"
-    v-if="gameStatus == 'Main-menu' || gameStatus == 'Game-over' || gameStatus == 'Finish-game'"
+    v-if="
+      gameStatus == 'Main-menu' ||
+      gameStatus == 'Game-over' ||
+      gameStatus == 'Finish-game' ||
+      gameStatus == 'Loading-menu'
+    "
     :game-status="gameStatus"
   />
   <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameOver" :gameStatus />
+  <SoundToggle />
 </template>
 
 <style scoped>
