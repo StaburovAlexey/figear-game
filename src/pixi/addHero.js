@@ -1,4 +1,5 @@
 import { AnimatedSprite, Assets } from 'pixi.js'
+import { sound } from '@pixi/sound'
 
 export async function addHero(heroHeight, upperY, lowerY) {
   const rideAliases = ['go_1', 'go_2', 'go_3', 'go_4', 'go_5', 'go_6']
@@ -16,7 +17,6 @@ export async function addHero(heroHeight, upperY, lowerY) {
 
   const rideTextures = rideAliases.map((p) => Assets.get(p))
   const jumpTextures = jumpAliases.map((p) => Assets.get(p))
-
   const animationSpeed = 0.15
   const hero = new AnimatedSprite(rideTextures)
 
@@ -64,6 +64,7 @@ export async function addHero(heroHeight, upperY, lowerY) {
       speed = 5
     }
     if (!hero.isJumping) {
+      sound.play('jump')
       const t = jumpDistance / speed
       const gravity = (8 * jumpHeight) / (t * t)
       const jumpSpeed = (4 * jumpHeight) / t
@@ -96,6 +97,7 @@ export async function addHero(heroHeight, upperY, lowerY) {
 
   // ✨ Мигание при неуязвимости
   hero.invulnerable = () => {
+    sound.play('smash')
     const flashingInterval = setInterval(() => {
       hero.alpha = hero.alpha === 1 ? 0.3 : 1
     }, 150)

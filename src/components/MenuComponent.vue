@@ -110,7 +110,7 @@
     transform: translateX(-100vw);
 
     /* запуск анимации */
-    animation: slide 4s ease-out forwards;
+    animation: slide 8s ease-out forwards infinite;
     animation-delay: 0.5s;
   }
 
@@ -126,11 +126,17 @@
     }
   }
   @keyframes slide {
-    from {
+    0% {
       transform: translateX(-100vw);
     }
-    to {
-      transform: translateX(+100vw);
+    50% {
+      transform: translateX(200vw);
+    }
+    51% {
+      transform: translateX(200vw) scaleX(-1);
+    }
+    100% {
+      transform: translateX(-100vw) scaleX(-1);
     }
   }
 </style>

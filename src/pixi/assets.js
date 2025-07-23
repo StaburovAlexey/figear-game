@@ -1,5 +1,5 @@
 import { Assets } from 'pixi.js'
-
+import { sound } from '@pixi/sound'
 import bar from '../assets/background/bar.png'
 import block from '../assets/background/block.png'
 import conus from '../assets/background/conus.png'
@@ -69,6 +69,10 @@ import jump6 from '../assets/hero/jump_6.png'
 import jump7 from '../assets/hero/jump_7.png'
 import jump8 from '../assets/hero/jump_8.png'
 import jump9 from '../assets/hero/jump_9.png'
+//Звук
+import jumpSoundSrc from '../assets/cut_scene/jump.wav'
+import smashSoundSrc from '../assets/cut_scene/smash.wav'
+import gameOverSoundSrc from '../assets/cut_scene/game_over.wav'
 export async function preloadAssets() {
   await Assets.load([
     { alias: 'bar', src: bar },
@@ -141,4 +145,19 @@ export async function preloadAssets() {
     { alias: 'jump_8', src: jump8 },
     { alias: 'jump_9', src: jump9 },
   ])
+  sound.add('jump', {
+    url: jumpSoundSrc,
+    preload: true,
+    volume: 0.6,
+  })
+  sound.add('smash', {
+    url: smashSoundSrc,
+    preload: true,
+    volume: 0.4,
+  })
+  sound.add('game_over', {
+    url: gameOverSoundSrc,
+    preload: true,
+    volume: 0.6,
+  })
 }

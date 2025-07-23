@@ -26,16 +26,26 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, onBeforeUnmount } from 'vue'
+  import { ref, onMounted, onBeforeUnmount, watchEffect } from 'vue'
   import themeMusic from '../assets/cut_scene/PixelRush.mp3'
+  const props = defineProps({
+    gameStatus: String,
+  })
 
   const audio = new Audio(themeMusic)
   const isPlaying = ref(false)
   const hasError = ref(false)
-
+  watchEffect(() => {
+    if (props.gameStatus === 'Game-over') {
+      audio.pause()
+      audio.currentTime = 0
+    } else {
+      audio.play()
+    }
+  })
   onMounted(() => {
     audio.loop = true
-    audio.volume = 0.5
+    audio.volume = 0.2
 
     audio
       .play()
@@ -78,7 +88,7 @@
 <style scoped>
   .sound-control {
     position: fixed;
-    top: 20px;
+    top: 40px;
     right: 20px;
     z-index: 1000;
   }

@@ -5,6 +5,7 @@ import { addBackgrounds } from './addBackgrounds'
 import { addHero } from './addHero'
 import { addObstacles } from './addBlocksOfRoad.js'
 import { count } from './addCountStart.js'
+import { sound } from '@pixi/sound'
 export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
   const app = new Application()
   const element = elementIdInit
@@ -66,7 +67,9 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}) => {
 
   function gameOver(finish = false) {
     if (isGameOver) return
-
+    if (!finish) {
+      sound.play('game_over')
+    }
     app.ticker.stop()
     app.ticker.remove(gameLoop)
     setTimeout(() => {

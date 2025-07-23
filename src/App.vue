@@ -43,7 +43,7 @@
     :game-status="gameStatus"
   />
   <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameOver" :gameStatus />
-  <SoundToggle />
+  <SoundToggle :gameStatus/>
 </template>
 
 <style scoped>
