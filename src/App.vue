@@ -1,10 +1,11 @@
 <script setup>
-  import { ref, onMounted, onBeforeUnmount } from 'vue'
+  import { ref, onMounted, onBeforeUnmount, reactive } from 'vue'
   import GameContainer from './components/game/GameContainer.vue'
   import MenuComponent from './components/MenuComponent.vue'
   import LeaderboardComponent from './components/LeaderboardComponent.vue'
   import SaveResultComponent from './components/SaveResultComponent.vue'
   import OrientationGuard from './components/OrientationGuard.vue'
+  import ChangeChapter from './components/ChangeChapter.vue'
   import SoundToggle from './components/SoundToggle.vue'
   onMounted(async () => {
     checkOrientation()
@@ -16,6 +17,7 @@
     window.removeEventListener('resize', checkOrientation)
   })
   const showOverlay = ref(false)
+  const gameChapter = reactive(null)
   const gameStatus = ref('Main-menu')
   function checkOrientation() {
     showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
@@ -26,6 +28,11 @@
   function changeGameStatus(value) {
     gameStatus.value = value
   }
+  function playChapter(chapter) {
+    gameStatus.value = 'Start-game'
+    console.log(`Играть: ${chapter.title} [${chapter.mode}]`)
+    gameChapter.value = chapter
+  }
 </script>
 
 <template>
@@ -34,6 +41,7 @@
   <SaveResultComponent v-if="gameStatus == 'Save-result'" @exit-menu="gameStatus = 'Main-menu'" />
   <MenuComponent
     @start-game="gameStatus = 'Start-game'"
+    @change-chapter="gameStatus = 'Change-chapter'"
     @exit-menu="gameStatus = 'Main-menu'"
     @liderboard="gameStatus = 'Leaderboard'"
     @save-result="gameStatus = 'Save-result'"
@@ -45,7 +53,12 @@
     "
     :game-status="gameStatus"
   />
-  <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameOver" :gameStatus />
+  <ChangeChapter
+    v-if="gameStatus == 'Change-chapter'"
+    @back-click="gameStatus = 'Main-menu'"
+    @play-chapter="playChapter"
+  />
+  <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameOver" :gameStatus :gameChapter />
   <SoundToggle :gameStatus />
 </template>
 

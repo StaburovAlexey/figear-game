@@ -12,6 +12,12 @@
   const gameOver = ref(false)
   const isLoading = ref(true) // прелоадер
   const emit = defineEmits(['game-over'])
+  const props = defineProps({
+    gameChapter: {
+      type: Object,
+      default: () => null,
+    },
+  })
   let pixiApp = null
 
   function moveHero(direction) {
@@ -25,7 +31,11 @@
     await preloadAssets()
 
     isLoading.value = false
-    pixiApp = await initPixiApp(gameContainer, { score, lives, seconds, bonus, gameOver })
+    pixiApp = await initPixiApp(
+      gameContainer,
+      { score, lives, seconds, bonus, gameOver },
+      props.gameChapter
+    )
   })
   watch(gameOver, (newGameOver) => {
     emit('game-over', newGameOver)

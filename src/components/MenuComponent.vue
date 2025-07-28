@@ -2,7 +2,7 @@
   import hero from '../assets/cut_scene/hero.gif'
   import logo from '../assets/FGRbout.png'
 
-  defineEmits(['start-game', 'liderboard', 'education', 'credits', 'exit-menu'])
+  defineEmits(['start-game', 'liderboard', 'education', 'credits', 'exit-menu', 'change-chapter'])
   defineProps({
     gameStatus: {
       type: String,
@@ -21,7 +21,7 @@
       {{ gameStatus == 'Game-over' ? 'Вы проиграли!' : 'Вы пришли вовремя!' }}
     </h2>
     <ul class="menu__list animate" v-if="gameStatus == 'Main-menu'">
-      <li><button @click="$emit('start-game')">Новая игра</button></li>
+      <li><button @click="$emit('change-chapter')">Новая игра</button></li>
       <li><button @click="$emit('liderboard')">Список лидеров</button></li>
       <li><button @click="$emit('education')">Обучение</button></li>
       <li><button @click="$emit('credits')">Команда</button></li>
