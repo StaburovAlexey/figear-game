@@ -6,7 +6,7 @@
 
 <script setup>
   import { ref, onMounted, onBeforeUnmount } from 'vue'
-
+  const emit = defineEmits(['orientation-changed'])
   const showOverlay = ref(false)
 
   function isMobile() {
@@ -16,6 +16,7 @@
   function checkOrientation() {
     const isLandscape = window.matchMedia('(orientation: landscape)').matches
     showOverlay.value = isMobile() && !isLandscape
+    emit('orientation-changed', showOverlay.value ? 'Orient-guard' : 'Main-menu')
   }
 
   onMounted(() => {

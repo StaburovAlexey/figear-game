@@ -23,10 +23,13 @@
   function gameOver(value) {
     gameStatus.value = value
   }
+  function changeGameStatus(value) {
+    gameStatus.value = value
+  }
 </script>
 
 <template>
-  <OrientationGuard />
+  <OrientationGuard @orientation-changed="changeGameStatus" />
   <LeaderboardComponent @exit-menu="gameStatus = 'Main-menu'" v-if="gameStatus == 'Leaderboard'" />
   <SaveResultComponent v-if="gameStatus == 'Save-result'" @exit-menu="gameStatus = 'Main-menu'" />
   <MenuComponent
