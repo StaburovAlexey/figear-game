@@ -17,7 +17,7 @@
     window.removeEventListener('resize', checkOrientation)
   })
   const showOverlay = ref(false)
-  const gameChapter = reactive(null)
+  const gameChapter = reactive({})
   const gameStatus = ref('Main-menu')
   function checkOrientation() {
     showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
@@ -58,7 +58,12 @@
     @back-click="gameStatus = 'Main-menu'"
     @play-chapter="playChapter"
   />
-  <GameContainer v-if="gameStatus == 'Start-game'" @game-over="gameOver" :gameStatus :gameChapter />
+  <GameContainer
+    v-if="gameStatus == 'Start-game'"
+    @game-over="gameOver"
+    :gameStatus
+    :game-chapter="gameChapter"
+  />
   <SoundToggle :gameStatus />
 </template>
 

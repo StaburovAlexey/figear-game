@@ -15,7 +15,7 @@
   const props = defineProps({
     gameChapter: {
       type: Object,
-      default: () => null,
+      default: () => {},
     },
   })
   let pixiApp = null
@@ -27,24 +27,42 @@
     }
   }
   onMounted(async () => {
-    const gameContainer = document.getElementById('game-container')
+    console.log('gameChapter:', props.gameChapter)
     await preloadAssets()
-
     isLoading.value = false
+    await preloadAssets()
+    isLoading.value = false
+
+    const gameContainer = document.getElementById('game-container')
     pixiApp = await initPixiApp(
       gameContainer,
       { score, lives, seconds, bonus, gameOver },
-      props.gameChapter
+      props.gameChapter.value
     )
   })
   watch(gameOver, (newGameOver) => {
     emit('game-over', newGameOver)
   })
+  // watch(isLoading, async (isLoading) => {
+  //   const gameContainer = document.getElementById('game-container')
+  //   pixiApp = await initPixiApp(
+  //     gameContainer,
+  //     { score, lives, seconds, bonus, gameOver },
+  //     props.gameChapter.value
+  //   )
+  // })
 </script>
 
 <template>
   <div class="container">
-    <GameHeader :score="score" :lives="lives" :seconds="seconds" :bonus="bonus" v-if="!isLoading" />
+    <GameHeader
+      :score="score"
+      :lives="lives"
+      :seconds="seconds"
+      :bonus="bonus"
+      :mode="props.gameChapter.value.mode"
+      v-if="!isLoading"
+    />
     <div id="game-container" class="game-container">
       <div v-if="isLoading" class="preloader">Загрузка...</div>
     </div>

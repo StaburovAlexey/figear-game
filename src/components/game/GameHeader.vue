@@ -5,6 +5,7 @@
     lives: Number,
     bonus: Number,
     seconds: Number,
+    mode: String,
   })
   const time = computed(() => {
     return `${Math.floor((props.seconds % 3600) / 60)} : ${props.seconds % 60}`
@@ -18,7 +19,8 @@
       <span class="value">{{ Math.floor(score) }}</span>
     </div>
     <div class="header-section center">
-      <span class="value">{{ time }}</span>
+      <span class="value" v-if="props.mode == 'normal'">{{ time }}</span>
+      <span class="value" style="font-size: 14px;" v-else>Бесконечный режим</span>
     </div>
     <div class="header-section bonus">
       <img src="../../assets/bonus/bonus1.png" alt="heart" class="icon" />
