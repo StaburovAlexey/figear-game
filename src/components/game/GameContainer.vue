@@ -30,8 +30,6 @@
     console.log('gameChapter:', props.gameChapter)
     await preloadAssets()
     isLoading.value = false
-    await preloadAssets()
-    isLoading.value = false
 
     const gameContainer = document.getElementById('game-container')
     pixiApp = await initPixiApp(
