@@ -76,7 +76,7 @@
       </svg>
     </button>
 
-    <div v-if.v-once="!isPlaying" class="tooltip">
+    <div v-if.v-once="!isPlaying && props.gameStatus == 'Main-menu'" class="tooltip">
       Мы очень старались над музыкой — пожалуйста, включите звук!
     </div>
   </div>
