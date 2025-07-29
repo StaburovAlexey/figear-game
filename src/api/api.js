@@ -22,11 +22,11 @@ export async function getTopScoresByChapter(chapter_id, mode_id) {
   return data
 }
 
-export async function upsertUserScoreAndGetTop(user_id, chapter_id, mode_id, score) {
+export async function upsertUserScoreAndGetTop(user_id, name, chapter_id, mode_id, score) {
   const { error: upsertError } = await supabase
     .from(tableName)
     .upsert(
-      { user_id, chapter_id, mode_id, score },
+      { user_id, name, chapter_id, mode_id, score },
       { onConflict: ['user_id', 'chapter_id', 'mode_id'] }
     )
 

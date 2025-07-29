@@ -1,5 +1,11 @@
 <script setup>
+  import { onMounted, ref } from 'vue'
+  import { getTopScoresByChapter } from '../api/api.js'
   const emit = defineEmits(['exit-menu'])
+  const leaderboard = ref([])
+  onMounted(() => {
+    leaderboard.value = getTopScoresByChapter(1, 1) // Пример вызова с chapter_id и mode_id
+  })
 </script>
 <template>
   <div class="leaderboard">
