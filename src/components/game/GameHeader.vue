@@ -20,13 +20,11 @@
     </div>
     <div class="header-section center">
       <span class="value" v-if="props.mode == 'normal'">{{ time }}</span>
-      <span class="value" style="font-size: 14px;" v-else>Бесконечный режим</span>
-    </div>
-    <div class="header-section bonus">
-      <img src="../../assets/bonus/bonus1.png" alt="heart" class="icon" />
-      <span class="value">x{{ bonus }}</span>
+      <span class="value" style="font-size: 11px;" v-else>Бесконечный режим</span>
     </div>
     <div class="header-section right">
+      <img src="../../assets/bonus/bonus1.png" alt="heart" class="icon" />
+      <span class="value">x{{ bonus }}</span>
       <img src="../../assets/heart.svg" alt="heart" class="icon" />
       <span class="value">x{{ lives }}</span>
     </div>
@@ -35,12 +33,10 @@
 
 <style scoped>
   .game-header {
-    display: flex;
     box-sizing: border-box;
     width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 20px 0;
+    height: 30px;
+    padding: 2px 20px 0;
     font-family: monospace;
     font-size: 24px;
     color: #f7e4cc;
@@ -67,6 +63,16 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+  }
+  .header-section.left {
+    position: absolute;
+    left: 25%;
+    transform: translateX(-25%);
+  }
+  .header-section.right {
+    position: absolute;
+    left: 75%;
+    transform: translateX(-75%);
   }
   .header-section.bonus {
     position: absolute;
