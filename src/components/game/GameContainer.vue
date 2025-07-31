@@ -4,6 +4,7 @@
   import GameHeader from './GameHeader.vue'
   import { preloadAssets } from '../../pixi/assets'
   import GameControls from './GameControls.vue'
+  import PreloaderComponent from '../PreloaderComponent.vue'
   // реактивные данные
   const score = ref(0)
   const lives = ref(3)
@@ -62,7 +63,7 @@
       v-if="!isLoading"
     />
     <div id="game-container" class="game-container">
-      <div v-if="isLoading" class="preloader">Загрузка...</div>
+      <PreloaderComponent v-if="isLoading" text="Инициализация уровня..." />
     </div>
     <GameControls v-if="!isLoading" @move="moveHero" />
   </div>

@@ -79,7 +79,7 @@
     color: rgb(154, 154, 154);
   }
   .menu-logo {
-    position: fixed; /* ваши координаты */
+    position: absolute; /* ваши координаты */
     top: 10px;
     left: 10px;
     height: 50%;
@@ -99,7 +99,7 @@
   /* 3) герой скользит слева направо, стартует спустя 1s */
   .menu-hero {
     z-index: -1;
-    position: fixed; /* ваши координаты */
+    position: absolute; /* ваши координаты */
     bottom: 20px;
     left: 20px;
     width: 30%;

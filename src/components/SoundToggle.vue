@@ -84,8 +84,8 @@
 
 <style scoped>
   .sound-control {
-    position: fixed;
-    top: 40px;
+    position: absolute;
+    top: 80px;
     right: 20px;
     z-index: 1000;
   }

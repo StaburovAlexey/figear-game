@@ -20,7 +20,7 @@
 </template>
 <style scoped>
   .controls {
-    position: fixed;
+    position: absolute;
     bottom: 20px;
     left: 0;
     right: 0;

@@ -8,18 +8,27 @@
 html {
   height: 100%;
   width: 100%;
+
 }
 body {
   height: 100%;
   width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background-color: black;
 }
 #app {
   height: 100%;
   width: 100%;
+  max-width: 950px;
+  max-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
+  overflow: hidden;
   background-color: black;
 }

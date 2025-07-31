@@ -33,7 +33,7 @@
 
 <style scoped>
   .orientation-overlay {
-    position: fixed;
+    position: absolute;
     z-index: 9999;
     padding: 5px;
     box-sizing: border-box;
