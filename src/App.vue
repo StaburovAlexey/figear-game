@@ -9,23 +9,19 @@
   import SoundToggle from './components/SoundToggle.vue'
   import PreloaderComponent from './components/PreloaderComponent.vue'
   import { getUserScores, upsertUserScoreAndGetTop } from './api/api'
-  const userId = ref(null)
-  const userName = ref(null)
+  import { useUser } from './composables/useUser'
+  const { user, getUser, updateScores } = useUser()
   onMounted(async () => {
     gameStatus.value = 'Loading-menu' // Показать экран загрузки
 
     const tg = window.Telegram?.WebApp
-    userId.value = tg.initDataUnsafe?.user?.id || 807148322
-    userName.value = tg.initDataUnsafe?.user?.username || 'gilbertfrost'
-    console.log('Telegram User ID:', userId.value)
+    const user_id = tg?.initDataUnsafe?.user?.id || 807148322
+    const userName = tg?.initDataUnsafe?.user?.username || 'gilbertfrost'
+
     tg?.ready()
     tg?.expand()
     tg.BackButton.hide()
-
-    // Подожди 1 секунду или загрузи данные (например, axios / fetch)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Переход на главное меню
+    await getUser(user_id, userName)
     gameStatus.value = 'Main-menu'
 
     // Проверка ориентации
@@ -43,16 +39,15 @@
   function checkOrientation() {
     showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
   }
-  function gameOver(gStatus, score) {
+  async function gameOver(gStatus, score) {
     console.log('Game Over:', gStatus, 'Score:', score)
     console.log('gameChapter.value:', gameChapter.value)
-    upsertUserScoreAndGetTop(
-      userId.value,
-      userName.value,
+    await updateScores(
       gameChapter.value.chapter_id,
       gameChapter.value.mode == 'normal' ? 1 : 2,
       Math.floor(score)
     )
+
     gameStatus.value = gStatus
   }
   function changeGameStatus(value) {

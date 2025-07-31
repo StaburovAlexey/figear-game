@@ -1,17 +1,11 @@
 <script setup>
-  import { onMounted, ref, watch, defineProps } from 'vue'
+  import { onMounted, ref, watch } from 'vue'
   import { getTopScoresByChapter, getUserScores } from '../api/api.js'
-
+  import { useUser } from '../composables/useUser.js'
   const emit = defineEmits(['exit-menu'])
-  const props = defineProps({
-    userId: {
-      type: Number,
-      default: null,
-    },
-  })
 
+  const { user } = useUser()
   const leaderboard = ref([])
-  const myScores = ref([])
   const myScore = ref(null)
   const loading = ref(false)
   const chapters = ref([{ id: 1, name: 'Заезд' }])
@@ -24,20 +18,14 @@
   const selectedMode = ref(1)
 
   async function loadData() {
-    console.log('userId:', props.userId)
     loading.value = true
-    leaderboard.value = await getTopScoresByChapter(selectedChapter.value, selectedMode.value)
-
-    if (props.userId) {
-      const scores = await getUserScores(props.userId)
-      myScores.value = scores
-
-      // Найти результат за выбранную главу и режим
+    if (user.user_id) {
       myScore.value =
-        scores.find(
+        user.scores.find(
           (s) => s.chapter_id === selectedChapter.value && s.mode_id === selectedMode.value
         ) || null
     }
+    leaderboard.value = await getTopScoresByChapter(selectedChapter.value, selectedMode.value)
     loading.value = false
   }
 
@@ -79,7 +67,7 @@
         <li
           v-for="(item, index) in leaderboard"
           :key="item.user_id"
-          :class="{ me: item.user_id === myScore?.user_id }"
+          :class="{ me: item.user_id === user?.user_id }"
         >
           <span class="position">{{ index + 1 }}.</span>
           <span class="name">{{ item.name }}</span>

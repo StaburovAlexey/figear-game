@@ -20,7 +20,7 @@
     </div>
     <div class="header-section center">
       <span class="value" v-if="props.mode == 'normal'">{{ time }}</span>
-      <span class="value" style="font-size: 11px;" v-else>Бесконечный режим</span>
+      <span class="value" style="font-size: 11px" v-else>Бесконечный режим</span>
     </div>
     <div class="header-section right">
       <img src="../../assets/bonus/bonus1.png" alt="heart" class="icon" />

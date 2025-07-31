@@ -35,19 +35,7 @@ export async function upsertUserScoreAndGetTop(user_id, name, chapter_id, mode_i
     throw upsertError
   }
 
-  const { data, error: fetchError } = await supabase
-    .from(tableName)
-    .select('*')
-    .eq('chapter_id', chapter_id)
-    .eq('mode_id', mode_id)
-    .order('score', { ascending: false })
-
-  if (fetchError) {
-    console.error('Ошибка получения топа:', fetchError.message)
-    throw fetchError
-  }
-
-  return data
+  return { statusus: 'success' }
 }
 
 export async function getUserScores(user_id) {
