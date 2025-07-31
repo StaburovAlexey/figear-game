@@ -57,6 +57,7 @@
   const emit = defineEmits(['play-chapter', 'back-click'])
   const chapters = reactive([
     {
+      chapter_id: 1,
       title: 'Заезд',
       media: 'https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif',
       mode: 'normal',

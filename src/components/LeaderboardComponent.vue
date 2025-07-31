@@ -1,13 +1,18 @@
 <script setup>
-  import { onMounted, ref, watch } from 'vue'
+  import { onMounted, ref, watch, defineProps } from 'vue'
   import { getTopScoresByChapter, getUserScores } from '../api/api.js'
 
   const emit = defineEmits(['exit-menu'])
+  const props = defineProps({
+    userId: {
+      type: Number,
+      default: null,
+    },
+  })
 
   const leaderboard = ref([])
   const myScores = ref([])
   const myScore = ref(null)
-  const myUserId = ref(1)
   const loading = ref(false)
   const chapters = ref([{ id: 1, name: 'Заезд' }])
   const modes = ref([
@@ -19,11 +24,12 @@
   const selectedMode = ref(1)
 
   async function loadData() {
+    console.log('userId:', props.userId)
     loading.value = true
     leaderboard.value = await getTopScoresByChapter(selectedChapter.value, selectedMode.value)
 
-    if (myUserId.value) {
-      const scores = await getUserScores(myUserId.value)
+    if (props.userId) {
+      const scores = await getUserScores(props.userId)
       myScores.value = scores
 
       // Найти результат за выбранную главу и режим

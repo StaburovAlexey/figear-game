@@ -40,7 +40,7 @@
     )
   })
   watch(gameOver, (newGameOver) => {
-    emit('game-over', newGameOver)
+    emit('game-over', newGameOver, score.value)
   })
   // watch(isLoading, async (isLoading) => {
   //   const gameContainer = document.getElementById('game-container')

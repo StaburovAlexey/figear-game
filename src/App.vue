@@ -8,13 +8,16 @@
   import ChangeChapter from './components/ChangeChapter.vue'
   import SoundToggle from './components/SoundToggle.vue'
   import PreloaderComponent from './components/PreloaderComponent.vue'
+  import { getUserScores, upsertUserScoreAndGetTop } from './api/api'
+  const userId = ref(null)
+  const userName = ref(null)
   onMounted(async () => {
     gameStatus.value = 'Loading-menu' // Показать экран загрузки
 
     const tg = window.Telegram?.WebApp
-    const userId = tg.initDataUnsafe?.user?.id
-
-    console.log('Telegram User ID:', userId)
+    userId.value = tg.initDataUnsafe?.user?.id || 807148322
+    userName.value = tg.initDataUnsafe?.user?.username || 'gilbertfrost'
+    console.log('Telegram User ID:', userId.value)
     tg?.ready()
     tg?.expand()
     tg.BackButton.hide()
@@ -40,15 +43,23 @@
   function checkOrientation() {
     showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
   }
-  function gameOver(value) {
-    gameStatus.value = value
+  function gameOver(gStatus, score) {
+    console.log('Game Over:', gStatus, 'Score:', score)
+    console.log('gameChapter.value:', gameChapter.value)
+    upsertUserScoreAndGetTop(
+      userId.value,
+      userName.value,
+      gameChapter.value.chapter_id,
+      gameChapter.value.mode == 'normal' ? 1 : 2,
+      Math.floor(score)
+    )
+    gameStatus.value = gStatus
   }
   function changeGameStatus(value) {
     gameStatus.value = value
   }
   function playChapter(chapter) {
     gameStatus.value = 'Start-game'
-    console.log(`Играть: ${chapter.title} [${chapter.mode}]`)
     gameChapter.value = chapter
   }
 </script>
@@ -58,6 +69,7 @@
     <OrientationGuard @orientation-changed="changeGameStatus" />
     <LeaderboardComponent
       @exit-menu="gameStatus = 'Main-menu'"
+      :user-id="userId"
       v-if="gameStatus == 'Leaderboard'"
     />
     <SaveResultComponent v-if="gameStatus == 'Save-result'" @exit-menu="gameStatus = 'Main-menu'" />
