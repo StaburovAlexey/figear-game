@@ -5,7 +5,7 @@
     lives: Number,
     bonus: Number,
     seconds: Number,
-    mode: String,
+    mode: Number,
   })
   const time = computed(() => {
     return `${Math.floor((props.seconds % 3600) / 60)} : ${props.seconds % 60}`
@@ -19,7 +19,7 @@
       <span class="value">{{ Math.floor(score) }}</span>
     </div>
     <div class="header-section center">
-      <span class="value" v-if="props.mode == 'normal'">{{ time }}</span>
+      <span class="value" v-if="props.mode == 1">{{ time }}</span>
       <span class="value" style="font-size: 11px" v-else>Бесконечный режим</span>
     </div>
     <div class="header-section right">

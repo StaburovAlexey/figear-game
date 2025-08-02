@@ -2,7 +2,7 @@
   import { initPixiApp } from '../../pixi/appPixi'
   import { onMounted, ref, watch } from 'vue'
   import GameHeader from './GameHeader.vue'
-  import { preloadAssets } from '../../pixi/assets'
+
   import GameControls from './GameControls.vue'
   import PreloaderComponent from '../PreloaderComponent.vue'
   // реактивные данные
@@ -29,9 +29,8 @@
   }
   onMounted(async () => {
     console.log('gameChapter:', props.gameChapter)
-    await preloadAssets()
-    isLoading.value = false
 
+    isLoading.value = false
     const gameContainer = document.getElementById('game-container')
     pixiApp = await initPixiApp(
       gameContainer,

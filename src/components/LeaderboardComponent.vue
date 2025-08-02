@@ -1,5 +1,5 @@
 <script setup>
-  import { onMounted, ref, watch } from 'vue'
+  import { onMounted, ref, watch, computed } from 'vue'
   import { getTopScoresByChapter, getUserScores } from '../api/api.js'
   import { useUser } from '../composables/useUser.js'
   const emit = defineEmits(['exit-menu'])
@@ -16,7 +16,9 @@
 
   const selectedChapter = ref(1)
   const selectedMode = ref(1)
-
+  const computerdUserPosition = computed(() => {
+    return leaderboard.value.findIndex((item) => item.user_id == user.user_id) + 1 || 'не в топе'
+  })
   async function loadData() {
     loading.value = true
     if (user.user_id) {
@@ -83,9 +85,7 @@
           <p>Режим: {{ modes.find((m) => m.id === selectedMode)?.name }}</p>
           <p>
             Место:
-            {{
-              leaderboard.findIndex((item) => item.user_id === myScore.user_id) + 1 || 'не в топе'
-            }}
+            {{ computerdUserPosition }}
           </p>
         </template>
         <template v-else>

@@ -25,7 +25,9 @@ const getUser = async (userId, userName) => {
     loading.value = false
   }
 }
-
+const userScoreForChapterAndMode = (chapter_id, mode_id) => {
+  return user.scores.find((score) => score.chapter_id === chapter_id && score.mode_id === mode_id)
+}
 const updateScores = async (chapter_id, mode_id, score) => {
   try {
     loading.value = true
@@ -45,6 +47,7 @@ export function useUser() {
   return {
     user,
     loading,
+    userScoreForChapterAndMode,
     getUser,
     updateScores,
   }

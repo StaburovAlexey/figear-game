@@ -21,7 +21,7 @@
                 <input
                   type="radio"
                   :name="'mode-' + index"
-                  value="normal"
+                  :value="1"
                   v-model="chapter.mode"
                   :disabled="!chapter.active"
                 />
@@ -31,7 +31,7 @@
                 <input
                   type="radio"
                   :name="'mode-' + index"
-                  value="endless"
+                  :value="2"
                   v-model="chapter.mode"
                   :disabled="!chapter.active"
                 />
@@ -60,7 +60,7 @@
       chapter_id: 1,
       title: 'Заезд',
       media: 'https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif',
-      mode: 'normal',
+      mode: 1,
       active: true,
     },
     {

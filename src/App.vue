@@ -9,8 +9,12 @@
   import SoundToggle from './components/SoundToggle.vue'
   import PreloaderComponent from './components/PreloaderComponent.vue'
   import { getUserScores, upsertUserScoreAndGetTop } from './api/api'
+  import { preloadAssets } from './pixi/assets'
   import { useUser } from './composables/useUser'
-  const { user, getUser, updateScores } = useUser()
+  import { useLeaderboardStore } from './composables/useLeaderboardStore'
+  const { user, getUser, updateScores, userScoreForChapterAndMode } = useUser()
+  const { updateLeaderboard, leaderboard } = useLeaderboardStore()
+
   onMounted(async () => {
     gameStatus.value = 'Loading-menu' // Показать экран загрузки
 
@@ -21,6 +25,7 @@
     tg?.ready()
     tg?.expand()
     tg.BackButton.hide()
+    await preloadAssets()
     await getUser(user_id, userName)
     gameStatus.value = 'Main-menu'
 
@@ -42,11 +47,14 @@
   async function gameOver(gStatus, score) {
     console.log('Game Over:', gStatus, 'Score:', score)
     console.log('gameChapter.value:', gameChapter.value)
-    await updateScores(
+    const userScore = userScoreForChapterAndMode(
       gameChapter.value.chapter_id,
-      gameChapter.value.mode == 'normal' ? 1 : 2,
-      Math.floor(score)
-    )
+      gameChapter.value.mode
+    ).score
+    if (userScore < Math.floor(score)) {
+      await updateScores(gameChapter.value.chapter_id, gameChapter.value.mode, Math.floor(score))
+      await updateLeaderboard(gameChapter.value.chapter_id, gameChapter.value.mode)
+    }
 
     gameStatus.value = gStatus
   }
