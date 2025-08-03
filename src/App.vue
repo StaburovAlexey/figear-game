@@ -8,6 +8,7 @@
   import ChangeChapter from './components/ChangeChapter.vue'
   import SoundToggle from './components/SoundToggle.vue'
   import PreloaderComponent from './components/PreloaderComponent.vue'
+  import GameOverComponent from './components/GameOverComponent.vue'
   import { preloadAssets } from './pixi/assets'
   import { useUser } from './composables/useUser'
   import { useLeaderboardStore } from './composables/useLeaderboardStore'
@@ -73,18 +74,19 @@
       v-if="gameStatus == 'Leaderboard'"
     />
     <SaveResultComponent v-if="gameStatus == 'Save-result'" @exit-menu="gameStatus = 'Main-menu'" />
+    <GameOverComponent
+      :gameStatus
+      @start-game="gameStatus = 'Start-game'"
+      @exit-menu="gameStatus = 'Main-menu'"
+      v-if="gameStatus == 'Game-over' || gameStatus == 'Finish-game'"
+    />
     <MenuComponent
       @start-game="gameStatus = 'Start-game'"
       @change-chapter="gameStatus = 'Change-chapter'"
       @exit-menu="gameStatus = 'Main-menu'"
       @liderboard="gameStatus = 'Leaderboard'"
       @save-result="gameStatus = 'Save-result'"
-      v-if="
-        gameStatus == 'Main-menu' ||
-        gameStatus == 'Game-over' ||
-        gameStatus == 'Finish-game' ||
-        gameStatus == 'Loading-menu'
-      "
+      v-if="gameStatus == 'Main-menu' || gameStatus == 'Loading-menu'"
       :game-status="gameStatus"
     />
     <ChangeChapter

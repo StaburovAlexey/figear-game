@@ -2,8 +2,8 @@
   import { onMounted, ref, watch, computed } from 'vue'
   import { useLeaderboardStore } from '../../composables/useLeaderboardStore.js'
   import { useUser } from '../../composables/useUser.js'
-  import listItemLeaderboard from './listItemLeaderboard.vue'
-
+  import listItemLeaderboard from './ItemListLeaderboard.vue'
+  import ListLeaderboard from './ListLeaderboard.vue'
   const emit = defineEmits(['exit-menu'])
 
   const { user } = useUser()
@@ -67,7 +67,7 @@
       </button>
     </div>
     <div class="leaderboard__content" v-loading="{ show: loading, text: 'Загрузка...' }">
-      <ol class="leaderboard__list">
+      <!-- <ol class="leaderboard__list">
         <listItemLeaderboard
           v-for="(item, index) in leaderboard"
           :key="item.user_id"
@@ -75,8 +75,8 @@
           :item
           :class="{ me: item.uuid === user?.uuid }"
         />
-      </ol>
-
+      </ol> -->
+      <ListLeaderboard :leaderboard class="leaderboard__list" />
       <div class="leaderboard__info">
         <template v-if="myScore">
           <h4>Ваши показатели</h4>
@@ -167,10 +167,6 @@
     text-align: left;
     font-size: 14px;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  .me {
-    color: yellow;
-    font-weight: bold;
   }
 
   .leaderboard__info {

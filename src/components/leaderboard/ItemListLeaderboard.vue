@@ -1,9 +1,5 @@
 <script setup>
-  import { defineProps, useAttrs, defineOptions } from 'vue'
-  defineOptions({
-    inheritAttrs: false,
-  })
-  const attrs = useAttrs()
+  import { defineProps } from 'vue'
   const props = defineProps({
     item: {
       type: Object,
@@ -13,10 +9,14 @@
       type: Number,
       required: true,
     },
+    isUser: {
+      type: Boolean,
+      default: false,
+    },
   })
 </script>
 <template>
-  <li v-bind="attrs">
+  <li :class="{ active: isUser }">
     <span class="position">{{ props.index + 1 }}.</span>
     <span class="name">{{ props.item.user.name }}</span>
     <span class="score">{{ props.item.score }}</span>
@@ -44,5 +44,9 @@
   .score {
     margin-left: auto;
     white-space: nowrap;
+  }
+  .active {
+    color: yellow;
+    font-weight: bold;
   }
 </style>
