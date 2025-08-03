@@ -1,60 +1,75 @@
 <template>
   <div class="chapter-container">
-    <ul class="chapter-list">
-      <li
-        v-for="(chapter, index) in chapters"
-        :key="index"
-        class="chapter-card"
-        :class="{ inactive: !chapter.active }"
-      >
-        <div class="chapter-content">
-          <div class="chapter-media">
-            <img v-if="chapter.media" :src="chapter.media" alt="media" class="media-preview" />
-            <div v-else class="media-preview" />
-          </div>
-          <div class="chapter-info">
-            <div class="chapter-header">
-              Глава {{ index + 1 }}: <strong style="font-size: 14px">{{ chapter.title }}</strong>
+    <h2 style="margin: 10px 0; text-align: center; color: white">Выбирите главу и режим</h2>
+    <div class="chapter-scrollable">
+      <ul class="chapter-list">
+        <li
+          v-for="(chapter, index) in chapters"
+          :key="index"
+          class="chapter-card"
+          :class="{ inactive: !chapter.active }"
+        >
+          <!-- Глава -->
+          <div class="chapter-content">
+            <div class="chapter-media">
+              <img v-if="chapter.media" :src="chapter.media" alt="media" class="media-preview" />
+              <div v-else class="media-preview" />
             </div>
-            <div class="chapter-controls">
-              <label>
-                <input
-                  type="radio"
-                  :name="'mode-' + index"
-                  :value="1"
-                  v-model="chapter.mode"
-                  :disabled="!chapter.active"
-                />
-                Обычный
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  :name="'mode-' + index"
-                  :value="2"
-                  v-model="chapter.mode"
-                  :disabled="!chapter.active"
-                />
-                Бесконечный
-              </label>
-              <button class="play-button" @click="playChapter(index)" :disabled="!chapter.active">
-                Играть
-              </button>
+            <div class="chapter-info">
+              <div class="chapter-header">
+                Глава {{ index + 1 }}: <strong style="font-size: 14px">{{ chapter.title }}</strong>
+              </div>
+              <div class="chapter-controls">
+                <label>
+                  <input
+                    type="radio"
+                    :name="'mode-' + index"
+                    :value="1"
+                    v-model="chapter.mode"
+                    :disabled="!chapter.active"
+                  />
+                  Обычный
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    :name="'mode-' + index"
+                    :value="2"
+                    v-model="chapter.mode"
+                    :disabled="!chapter.active"
+                  />
+                  Бесконечный
+                </label>
+                <button class="play-button" @click="playChapter(index)" :disabled="!chapter.active">
+                  Играть
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Накладка "Скоро" -->
-        <div v-if="!chapter.active" class="coming-soon">СКОРО</div>
-      </li>
-    </ul>
-    <button class="back-button" @click="emit('back-click')">Назад</button>
+          <!-- Накладка "Скоро" -->
+          <div v-if="!chapter.active" class="coming-soon">СКОРО</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Кнопка внизу -->
+    <ContainerButtonInBottom :buttons />
   </div>
 </template>
 
 <script setup>
   import { reactive } from 'vue'
+  import ContainerButtonInBottom from './containerButtonInBottom/ContainerButtonInBottom.vue'
   const emit = defineEmits(['play-chapter', 'back-click'])
+  const buttons = [
+    {
+      name: 'Назад',
+      onClick: () => {
+        emit('back-click')
+      },
+    },
+  ]
   const chapters = reactive([
     {
       chapter_id: 1,
@@ -99,15 +114,21 @@
     cursor: pointer;
   }
   .chapter-container {
+    display: flex;
+
+    flex-direction: column;
     height: 100%;
     width: 70%;
     padding: 10px 10px 0;
-    margin-bottom: 40px;
-    overflow-y: auto;
     font-family: 'pixel', monospace;
     color: #ffd700;
   }
-
+  .chapter-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 12px;
+    padding-right: 4px; /* для видимости скролла */
+  }
   .chapter-list {
     list-style: none;
     padding: 0;

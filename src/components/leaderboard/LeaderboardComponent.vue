@@ -2,10 +2,17 @@
   import { onMounted, ref, watch, computed } from 'vue'
   import { useLeaderboardStore } from '../../composables/useLeaderboardStore.js'
   import { useUser } from '../../composables/useUser.js'
-  import listItemLeaderboard from './ItemListLeaderboard.vue'
+  import ContainerButtonInBottom from '../containerButtonInBottom/ContainerButtonInBottom.vue'
   import ListLeaderboard from './ListLeaderboard.vue'
   const emit = defineEmits(['exit-menu'])
-
+  const buttons = [
+    {
+      name: 'Вернуться в меню',
+      onClick: () => {
+        emit('exit-menu')
+      },
+    },
+  ]
   const { user } = useUser()
   const { leaderboard, loadingLeaderboard, updateLeaderboard } = useLeaderboardStore()
   const myScore = ref(null)
@@ -19,7 +26,7 @@
   const selectedChapter = ref(1)
   const selectedMode = ref(1)
   const computerdUserPosition = computed(() => {
-    return leaderboard.value.findIndex((item) => item.user_id == user.user_id) + 1 || 'не в топе'
+    return leaderboard.value.find((item) => item.uuid == user.value.uuid)?.rank || 'не в топе'
   })
   async function loadData() {
     loading.value = true
@@ -93,8 +100,8 @@
         </template>
       </div>
     </div>
-
-    <button class="leaderboard__btn-exit" @click="emit('exit-menu')">Вернуться в меню</button>
+    <ContainerButtonInBottom :buttons />
+    <!-- <button class="leaderboard__btn-exit" @click="emit('exit-menu')">Вернуться в меню</button> -->
   </div>
 </template>
 

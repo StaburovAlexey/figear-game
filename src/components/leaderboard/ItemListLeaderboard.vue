@@ -17,7 +17,7 @@
 </script>
 <template>
   <li :class="{ active: isUser }">
-    <span class="position">{{ props.index + 1 }}.</span>
+    <span class="position">{{ props.item.rank }}.</span>
     <span class="name">{{ props.item.user.name }}</span>
     <span class="score">{{ props.item.score }}</span>
   </li>

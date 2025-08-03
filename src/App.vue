@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted, onBeforeUnmount, reactive } from 'vue'
+  import { ref, onMounted, onBeforeUnmount, reactive, computed } from 'vue'
   import GameContainer from './components/game/GameContainer.vue'
   import MenuComponent from './components/MenuComponent.vue'
   import LeaderboardComponent from './components/leaderboard/LeaderboardComponent.vue'
@@ -12,53 +12,77 @@
   import { preloadAssets } from './pixi/assets'
   import { useUser } from './composables/useUser'
   import { useLeaderboardStore } from './composables/useLeaderboardStore'
+
   const { user, getUser, updateScores, userScoreForChapterAndMode } = useUser()
-  const { updateLeaderboard, leaderboard } = useLeaderboardStore()
+  const { updateLeaderboard } = useLeaderboardStore()
+
+  const showOverlay = ref(false)
+  const gameChapter = reactive({})
+  const gameStatus = ref('Main-menu')
+  const isSurpassed = ref(false)
+  // Компоненты по статусу
+  const componentsMap = {
+    'Main-menu': MenuComponent,
+    'Loading-menu': MenuComponent,
+    Leaderboard: LeaderboardComponent,
+    'Save-result': SaveResultComponent,
+    'Game-over': GameOverComponent,
+    'Finish-game': GameOverComponent,
+    'Change-chapter': ChangeChapter,
+    'Start-game': GameContainer,
+  }
+
+  const currentComponent = computed(() => componentsMap[gameStatus.value] || null)
 
   onMounted(async () => {
-    // gameStatus.value = 'Loading-menu' // Показать экран загрузки
-    gameStatus.value = 'Game-over'
+    gameStatus.value = 'Loading-menu' // или 'Loading-menu', если нужно показать загрузку
     const tg = window.Telegram?.WebApp
     const telegram_id = tg?.initDataUnsafe?.user?.id || 807148322
     const username = tg?.initDataUnsafe?.user?.username || 'gilbertfrost'
 
     tg?.ready()
     tg?.expand()
-    tg.BackButton.hide()
+    tg.BackButton?.hide()
+
     await preloadAssets()
     await getUser({ telegram_id, username })
-    // gameStatus.value = 'Main-menu'
 
-    // Проверка ориентации
+    gameStatus.value = 'Main-menu'
+
     checkOrientation()
     window.addEventListener('orientationchange', checkOrientation)
     window.addEventListener('resize', checkOrientation)
   })
+
   onBeforeUnmount(() => {
     window.removeEventListener('orientationchange', checkOrientation)
     window.removeEventListener('resize', checkOrientation)
   })
-  const showOverlay = ref(false)
-  const gameChapter = reactive({})
-  const gameStatus = ref('Main-menu')
+
   function checkOrientation() {
     showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
   }
+
   async function gameOver(gStatus, score) {
+    isSurpassed.value = false
     const userScore = userScoreForChapterAndMode(
       gameChapter.value.chapter_id,
       gameChapter.value.mode
     )?.score
+
     if (!userScore || userScore < Math.floor(score)) {
       await updateScores(gameChapter.value.chapter_id, gameChapter.value.mode, Math.floor(score))
       await updateLeaderboard(gameChapter.value.chapter_id, gameChapter.value.mode)
+      isSurpassed.value = true
     }
 
     gameStatus.value = gStatus
   }
+
   function changeGameStatus(value) {
     gameStatus.value = value
   }
+
   function playChapter(chapter) {
     gameStatus.value = 'Start-game'
     gameChapter.value = chapter
@@ -68,40 +92,25 @@
 <template>
   <div class="safe-area">
     <OrientationGuard @orientation-changed="changeGameStatus" />
-    <LeaderboardComponent
+    <component
+      :is="currentComponent"
+      v-if="currentComponent"
+      :game-status="gameStatus"
+      :game-chapter="gameChapter"
+      :user-id="user?.id"
+      :is-surpassed="isSurpassed"
       @exit-menu="gameStatus = 'Main-menu'"
-      :user-id="userId"
-      v-if="gameStatus == 'Leaderboard'"
-    />
-    <SaveResultComponent v-if="gameStatus == 'Save-result'" @exit-menu="gameStatus = 'Main-menu'" />
-    <GameOverComponent
-      :gameStatus
-      @start-game="gameStatus = 'Start-game'"
-      @exit-menu="gameStatus = 'Main-menu'"
-      v-if="gameStatus == 'Game-over' || gameStatus == 'Finish-game'"
-    />
-    <MenuComponent
       @start-game="gameStatus = 'Start-game'"
       @change-chapter="gameStatus = 'Change-chapter'"
-      @exit-menu="gameStatus = 'Main-menu'"
       @liderboard="gameStatus = 'Leaderboard'"
       @save-result="gameStatus = 'Save-result'"
-      v-if="gameStatus == 'Main-menu' || gameStatus == 'Loading-menu'"
-      :game-status="gameStatus"
-    />
-    <ChangeChapter
-      v-if="gameStatus == 'Change-chapter'"
-      @back-click="gameStatus = 'Main-menu'"
       @play-chapter="playChapter"
-    />
-    <GameContainer
-      v-if="gameStatus == 'Start-game'"
+      @back-click="gameStatus = 'Main-menu'"
       @game-over="gameOver"
-      :gameStatus
-      :game-chapter="gameChapter"
     />
-    <SoundToggle :gameStatus />
-    <PreloaderComponent v-if="gameStatus == 'Loading-menu'" text="Загрузка..." />
+
+    <SoundToggle :gameStatus="gameStatus" />
+    <PreloaderComponent v-if="gameStatus === 'Loading-menu'" text="Загрузка..." />
   </div>
 </template>
 
@@ -109,8 +118,6 @@
   .game-container {
     width: 100%;
     height: 100%;
-    /* max-width: 800px;
-    max-height: 600px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -118,6 +125,7 @@
     font-size: 24px;
     color: #333;
   }
+
   .safe-area {
     width: 100%;
     height: 100%;
@@ -128,10 +136,6 @@
     position: relative;
     background-color: transparent;
     padding-top: var(--tg-safe-area-inset-top);
-    /* padding-top: var(--tg-content-safe-area-inset-top); */
     box-sizing: border-box;
-    /* padding-bottom: var(--tg-safe-area-inset-bottom);
-    padding-left: var(--tg-safe-area-inset-left);
-    padding-right: var(--tg-safe-area-inset-right); */
   }
 </style>

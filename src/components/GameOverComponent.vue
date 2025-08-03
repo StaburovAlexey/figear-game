@@ -1,12 +1,22 @@
 <script setup>
-  import { defineProps } from 'vue'
+  import { defineProps, computed, onMounted } from 'vue'
   import ContainerButtonInBottom from './containerButtonInBottom/ContainerButtonInBottom.vue'
   import ListLeaderboard from './leaderboard/ListLeaderboard.vue'
+  import { useLeaderboardStore } from '../composables/useLeaderboardStore'
+  import { useUser } from '../composables/useUser'
   const emit = defineEmits()
   const props = defineProps({
     gameStatus: {
       type: String,
       default: '',
+    },
+    gameChapter: {
+      type: Object,
+      default: () => {},
+    },
+    isSurpassed: {
+      type: Boolean,
+      default: false,
     },
   })
   const buttons = [
@@ -23,6 +33,16 @@
       },
     },
   ]
+  const { updateLeaderboard, leaderboard, loadingLeaderboard } = useLeaderboardStore()
+  const { user } = useUser()
+  const leaderboardAfterAndBeforeUser = computed(() => {
+    const indexUser = leaderboard.value.findIndex((item) => item.uuid == user.value.uuid)
+    return [
+      leaderboard.value[indexUser - 1],
+      leaderboard.value[indexUser],
+      leaderboard.value[indexUser + 1],
+    ]
+  })
 </script>
 <template>
   <div class="menu">
@@ -32,7 +52,9 @@
     >
       {{ props.gameStatus == 'Game-over' ? 'Конец игры!' : 'Вы пришли вовремя!' }}
     </h2>
-    <ListLeaderboard class="leaderboard__list" />
+    <h3 v-if="props.isSurpassed">Вы превзошли себя!!!</h3>
+    <h3 v-if="!props.isSurpassed">Вы не смогли превзойти себя...</h3>
+    <ListLeaderboard class="leaderboard__list" :leaderboard="leaderboardAfterAndBeforeUser" />
     <ContainerButtonInBottom :buttons />
   </div>
 </template>
@@ -75,6 +97,6 @@
     /* list-style: none; */
     overflow-y: auto;
     text-align: left;
-    font-size: 14px;
+    font-size: 24px;
   }
 </style>
