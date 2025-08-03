@@ -8,7 +8,6 @@
   import ChangeChapter from './components/ChangeChapter.vue'
   import SoundToggle from './components/SoundToggle.vue'
   import PreloaderComponent from './components/PreloaderComponent.vue'
-  import { getUserScores, upsertUserScoreAndGetTop } from './api/api'
   import { preloadAssets } from './pixi/assets'
   import { useUser } from './composables/useUser'
   import { useLeaderboardStore } from './composables/useLeaderboardStore'
@@ -19,14 +18,14 @@
     gameStatus.value = 'Loading-menu' // Показать экран загрузки
 
     const tg = window.Telegram?.WebApp
-    const user_id = tg?.initDataUnsafe?.user?.id || 807148322
-    const userName = tg?.initDataUnsafe?.user?.username || 'gilbertfrost'
+    const telegram_id = tg?.initDataUnsafe?.user?.id || 807148322
+    const username = tg?.initDataUnsafe?.user?.username || 'gilbertfrost'
 
     tg?.ready()
     tg?.expand()
     tg.BackButton.hide()
     await preloadAssets()
-    await getUser(user_id, userName)
+    await getUser({ telegram_id, username })
     gameStatus.value = 'Main-menu'
 
     // Проверка ориентации
@@ -50,8 +49,8 @@
     const userScore = userScoreForChapterAndMode(
       gameChapter.value.chapter_id,
       gameChapter.value.mode
-    ).score
-    if (userScore < Math.floor(score)) {
+    )?.score
+    if (!userScore || userScore < Math.floor(score)) {
       await updateScores(gameChapter.value.chapter_id, gameChapter.value.mode, Math.floor(score))
       await updateLeaderboard(gameChapter.value.chapter_id, gameChapter.value.mode)
     }

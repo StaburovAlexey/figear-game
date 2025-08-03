@@ -1,23 +1,20 @@
 import { ref, reactive, computed } from 'vue'
-import { getUserScores, upsertUserScoreAndGetTop } from '../api/api'
+import {
+  getOrCreateUserWithScores,
+  getScoresByUserUuid,
+  upsertScore,
+  updateUserAlerts,
+} from '../api/api'
 
 const loading = ref(false)
-const user = reactive({
-  user_id: null,
-  name: null,
-  scores: [],
-})
-const getUser = async (userId, userName) => {
+const user = ref({})
+const getUser = async (telegram_id, username) => {
   try {
     loading.value = true
-    const res = await getUserScores(userId)
-    user.user_id = res[0]?.user_id || userId
-    user.name = res[0]?.name || userName
-    user.scores = res.map((score) => ({
-      chapter_id: score.chapter_id,
-      mode_id: score.mode_id,
-      score: score.score,
-    }))
+    console.log('getUser', telegram_id, username)
+    const res = await getOrCreateUserWithScores(telegram_id, username)
+    user.value = res
+    console.log('user', user.value)
   } catch (error) {
     console.error('Ошибка при получении данных пользователя:', error.message)
     throw error
@@ -26,17 +23,24 @@ const getUser = async (userId, userName) => {
   }
 }
 const userScoreForChapterAndMode = (chapter_id, mode_id) => {
-  return user.scores.find((score) => score.chapter_id === chapter_id && score.mode_id === mode_id)
+  return (
+    user.value.scores.find(
+      (score) => score.chapter_id === chapter_id && score.mode_id === mode_id
+    ) || null
+  )
 }
 const updateScores = async (chapter_id, mode_id, score) => {
+  console.log('user', user.value)
   try {
     loading.value = true
-    const res = await upsertUserScoreAndGetTop(user.user_id, user.name, chapter_id, mode_id, score)
-    user.scores = res.map((score) => ({
-      chapter_id: score.chapter_id,
-      mode_id: score.mode_id,
-      score: score.score,
-    }))
+    console.log('user', user.value)
+    user.value.scores = await upsertScore({
+      uuid: user.value.uuid,
+      chapter_id,
+      mode_id,
+      score,
+      name: user.value.name,
+    })
   } catch (error) {
     console.error('Ошибка при обновлении данных пользователя:', error.message)
   } finally {

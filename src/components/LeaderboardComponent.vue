@@ -1,11 +1,11 @@
 <script setup>
   import { onMounted, ref, watch, computed } from 'vue'
-  import { getTopScoresByChapter, getUserScores } from '../api/api.js'
+  import { useLeaderboardStore } from '../composables/useLeaderboardStore.js'
   import { useUser } from '../composables/useUser.js'
   const emit = defineEmits(['exit-menu'])
 
   const { user } = useUser()
-  const leaderboard = ref([])
+  const { leaderboard, updateLeaderboard } = useLeaderboardStore()
   const myScore = ref(null)
   const loading = ref(false)
   const chapters = ref([{ id: 1, name: 'Заезд' }])
@@ -21,13 +21,14 @@
   })
   async function loadData() {
     loading.value = true
-    if (user.user_id) {
+    console.log('user', user.value)
+    if (user.value.telegram_id) {
       myScore.value =
-        user.scores.find(
+        user.value.scores.find(
           (s) => s.chapter_id === selectedChapter.value && s.mode_id === selectedMode.value
         ) || null
     }
-    leaderboard.value = await getTopScoresByChapter(selectedChapter.value, selectedMode.value)
+    await updateLeaderboard(selectedChapter.value, selectedMode.value)
     loading.value = false
   }
 
@@ -69,10 +70,10 @@
         <li
           v-for="(item, index) in leaderboard"
           :key="item.user_id"
-          :class="{ me: item.user_id === user?.user_id }"
+          :class="{ me: item.telegram_id === user?.telegram_id }"
         >
           <span class="position">{{ index + 1 }}.</span>
-          <span class="name">{{ item.name }}</span>
+          <span class="name">{{ item.users_dev.name }}</span>
           <span class="score">{{ item.score }}</span>
         </li>
       </ol>
