@@ -89,7 +89,11 @@ export async function getScoresByChapterAndMode(chapter_id, mode_id) {
     throw new Error('Ошибка при получении списка score: ' + error.message)
   }
 
-  return data
+  // Преобразуем вложенное поле с именем таблицы в поле "user"
+  return data.map((row) => ({
+    ...row,
+    user: row[usersTable],
+  }))
 }
 export async function updateUserAlerts(uuid, alerts) {
   const { data, error } = await supabase

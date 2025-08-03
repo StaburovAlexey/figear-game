@@ -25,8 +25,11 @@
     font-size: 28px;
     color: white;
     z-index: 10;
-    animation: blink 1s infinite;
     pointer-events: none;
+    background-color: black;
+  }
+  .preloader span {
+    animation: blink 1s infinite;
   }
 
   @keyframes blink {

@@ -1,11 +1,13 @@
 <script setup>
   import { onMounted, ref, watch, computed } from 'vue'
-  import { useLeaderboardStore } from '../composables/useLeaderboardStore.js'
-  import { useUser } from '../composables/useUser.js'
+  import { useLeaderboardStore } from '../../composables/useLeaderboardStore.js'
+  import { useUser } from '../../composables/useUser.js'
+  import listItemLeaderboard from './listItemLeaderboard.vue'
+
   const emit = defineEmits(['exit-menu'])
 
   const { user } = useUser()
-  const { leaderboard, updateLeaderboard } = useLeaderboardStore()
+  const { leaderboard, loadingLeaderboard, updateLeaderboard } = useLeaderboardStore()
   const myScore = ref(null)
   const loading = ref(false)
   const chapters = ref([{ id: 1, name: 'Заезд' }])
@@ -64,18 +66,15 @@
         {{ mode.name }}
       </button>
     </div>
-
-    <div class="leaderboard__content">
+    <div class="leaderboard__content" v-loading="{ show: loading, text: 'Загрузка...' }">
       <ol class="leaderboard__list">
-        <li
+        <listItemLeaderboard
           v-for="(item, index) in leaderboard"
           :key="item.user_id"
-          :class="{ me: item.telegram_id === user?.telegram_id }"
-        >
-          <span class="position">{{ index + 1 }}.</span>
-          <span class="name">{{ item.users_dev.name }}</span>
-          <span class="score">{{ item.score }}</span>
-        </li>
+          :index
+          :item
+          :class="{ me: item.uuid === user?.uuid }"
+        />
       </ol>
 
       <div class="leaderboard__info">
@@ -169,35 +168,7 @@
     font-size: 14px;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
   }
-  /* .leaderboard__list span {
-    margin-right: 6px;
-  } */
-  .leaderboard__list li {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0;
-  }
-
-  .leaderboard__list li .position {
-    width: 24px;
-    flex-shrink: 0;
-  }
-
-  .leaderboard__list li .name {
-    max-width: 140px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex-grow: 1;
-  }
-
-  .leaderboard__list li .score {
-    margin-left: auto;
-    white-space: nowrap;
-  }
-
-  .leaderboard__list li.me {
+  .me {
     color: yellow;
     font-weight: bold;
   }

@@ -2,7 +2,7 @@
   import { ref, onMounted, onBeforeUnmount, reactive } from 'vue'
   import GameContainer from './components/game/GameContainer.vue'
   import MenuComponent from './components/MenuComponent.vue'
-  import LeaderboardComponent from './components/LeaderboardComponent.vue'
+  import LeaderboardComponent from './components/leaderboard/LeaderboardComponent.vue'
   import SaveResultComponent from './components/SaveResultComponent.vue'
   import OrientationGuard from './components/OrientationGuard.vue'
   import ChangeChapter from './components/ChangeChapter.vue'
