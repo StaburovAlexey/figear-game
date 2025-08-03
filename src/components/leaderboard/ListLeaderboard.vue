@@ -7,6 +7,10 @@
       type: Array,
       required: true,
     },
+    animated: {
+      type: Boolean,
+      default: false,
+    },
   })
   const { user } = useUser()
 </script>
@@ -17,6 +21,7 @@
       :key="item.user_id"
       :index
       :item
+      :animated
       :is-user="item.uuid == user?.uuid"
     />
   </ol>

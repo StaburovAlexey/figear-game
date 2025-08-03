@@ -36,12 +36,33 @@
   const { updateLeaderboard, leaderboard, loadingLeaderboard } = useLeaderboardStore()
   const { user } = useUser()
   const leaderboardAfterAndBeforeUser = computed(() => {
-    const indexUser = leaderboard.value.findIndex((item) => item.uuid == user.value.uuid)
-    return [
-      leaderboard.value[indexUser - 1],
-      leaderboard.value[indexUser],
-      leaderboard.value[indexUser + 1],
-    ]
+    const result = []
+    const indexUser = leaderboard.value.findIndex((item) => item.uuid === user.value.uuid)
+
+    if (indexUser === -1) return result // пользователь не найден
+
+    const total = leaderboard.value.length
+
+    if (total === 1) {
+      result.push(leaderboard.value[indexUser])
+    } else if (indexUser === 0) {
+      // первый элемент
+      result.push(leaderboard.value[indexUser])
+      if (total > 1) result.push(leaderboard.value[indexUser + 1])
+      if (total > 2) result.push(leaderboard.value[indexUser + 2])
+    } else if (indexUser === total - 1) {
+      // последний элемент
+      if (total > 2) result.push(leaderboard.value[indexUser - 2])
+      if (total > 1) result.push(leaderboard.value[indexUser - 1])
+      result.push(leaderboard.value[indexUser])
+    } else {
+      // где-то в середине
+      result.push(leaderboard.value[indexUser - 1])
+      result.push(leaderboard.value[indexUser])
+      result.push(leaderboard.value[indexUser + 1])
+    }
+    console.log('result', result)
+    return result
   })
 </script>
 <template>
@@ -52,9 +73,13 @@
     >
       {{ props.gameStatus == 'Game-over' ? 'Конец игры!' : 'Вы пришли вовремя!' }}
     </h2>
-    <h3 v-if="props.isSurpassed">Вы превзошли себя!!!</h3>
-    <h3 v-if="!props.isSurpassed">Вы не смогли превзойти себя...</h3>
-    <ListLeaderboard class="leaderboard__list" :leaderboard="leaderboardAfterAndBeforeUser" />
+    <h3 v-if="props.isSurpassed" class="animated_text">Вы превзошли себя!!!</h3>
+    <h3 v-if="!props.isSurpassed" class="animated_text">Вы не смогли превзойти себя...</h3>
+    <ListLeaderboard
+      class="leaderboard__list"
+      animated
+      :leaderboard="leaderboardAfterAndBeforeUser"
+    />
     <ContainerButtonInBottom :buttons />
   </div>
 </template>
@@ -93,10 +118,26 @@
   .leaderboard__list {
     flex: 1;
     max-width: 60%;
+    width: 300px;
     padding: 0 5px 0 0;
     /* list-style: none; */
     overflow-y: auto;
     text-align: left;
     font-size: 24px;
+    overflow-x: hidden;
+  }
+  .animated_text {
+    margin: 30px 0 0;
+    animation: drop 0.4s ease-out forwards;
+  }
+  @keyframes drop {
+    from {
+      transform: scale(20);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 </style>

@@ -69,10 +69,10 @@
       gameChapter.value.chapter_id,
       gameChapter.value.mode
     )?.score
-
+    await updateLeaderboard(gameChapter.value.chapter_id, gameChapter.value.mode)
     if (!userScore || userScore < Math.floor(score)) {
       await updateScores(gameChapter.value.chapter_id, gameChapter.value.mode, Math.floor(score))
-      await updateLeaderboard(gameChapter.value.chapter_id, gameChapter.value.mode)
+
       isSurpassed.value = true
     }
 
