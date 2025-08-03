@@ -15,8 +15,8 @@
   const { updateLeaderboard, leaderboard } = useLeaderboardStore()
 
   onMounted(async () => {
-    gameStatus.value = 'Loading-menu' // Показать экран загрузки
-
+    // gameStatus.value = 'Loading-menu' // Показать экран загрузки
+    gameStatus.value = 'Game-over'
     const tg = window.Telegram?.WebApp
     const telegram_id = tg?.initDataUnsafe?.user?.id || 807148322
     const username = tg?.initDataUnsafe?.user?.username || 'gilbertfrost'
@@ -26,7 +26,7 @@
     tg.BackButton.hide()
     await preloadAssets()
     await getUser({ telegram_id, username })
-    gameStatus.value = 'Main-menu'
+    // gameStatus.value = 'Main-menu'
 
     // Проверка ориентации
     checkOrientation()
@@ -44,8 +44,6 @@
     showOverlay.value = !window.matchMedia('(orientation: landscape)').matches
   }
   async function gameOver(gStatus, score) {
-    console.log('Game Over:', gStatus, 'Score:', score)
-    console.log('gameChapter.value:', gameChapter.value)
     const userScore = userScoreForChapterAndMode(
       gameChapter.value.chapter_id,
       gameChapter.value.mode

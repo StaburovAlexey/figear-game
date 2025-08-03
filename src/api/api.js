@@ -55,16 +55,17 @@ export async function getScoresByUserUuid(uuid) {
   return scores
 }
 
-export async function upsertScore({ uuid, chapter_id, mode_id, score, name }) {
+export async function upsertScore({ uuid, chapter_id, mode_id, score }) {
   const { error } = await supabase
     .from(scoresTable)
-    .upsert([{ uuid, chapter_id, mode_id, score, name }], {
+    .upsert([{ uuid, chapter_id, mode_id, score }], {
       onConflict: ['uuid', 'chapter_id', 'mode_id'],
     })
 
   if (error) {
     throw new Error('Ошибка при upsert score: ' + error.message)
   }
+  return await getScoresByUserUuid(uuid)
 }
 export async function getScoresByChapterAndMode(chapter_id, mode_id) {
   const { data, error } = await supabase

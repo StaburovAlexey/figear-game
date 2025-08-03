@@ -1,7 +1,7 @@
 <script setup>
   import hero from '../assets/cut_scene/hero.gif'
   import logo from '../assets/FGRbout.png'
-
+  import listItemLeaderboard from '../components/leaderboard/listItemLeaderboard.vue'
   defineEmits(['start-game', 'liderboard', 'education', 'credits', 'exit-menu', 'change-chapter'])
   defineProps({
     gameStatus: {
@@ -18,7 +18,7 @@
       style="margin-bottom: 0; margin-top: 30px"
       v-if="gameStatus == 'Game-over' || gameStatus == 'Finish-game'"
     >
-      {{ gameStatus == 'Game-over' ? 'Вы проиграли!' : 'Вы пришли вовремя!' }}
+      {{ gameStatus == 'Game-over' ? 'Конец игры!' : 'Вы пришли вовремя!' }}
     </h2>
     <ul class="menu__list animate" v-if="gameStatus == 'Main-menu'">
       <li><button @click="$emit('change-chapter')">Новая игра</button></li>
@@ -27,8 +27,17 @@
       <li><button @click="$emit('credits')">Команда</button></li>
     </ul>
     <ul class="menu__list" v-if="gameStatus == 'Game-over' || gameStatus == 'Finish-game'">
+      <ol class="leaderboard__list">
+        <listItemLeaderboard
+          v-for="(item, index) in leaderboard"
+          :key="item.user_id"
+          :index
+          :item
+          :class="{ me: item.uuid === user?.uuid }"
+        />
+      </ol>
       <li><button @click="$emit('start-game')">Начать сначала</button></li>
-      <li><button @click="$emit('save-result')">Сохранить результат</button></li>
+      <!-- <li><button @click="$emit('save-result')">Сохранить результат</button></li> -->
       <li><button @click="$emit('exit-menu')">Выход в меню</button></li>
     </ul>
   </div>
@@ -113,7 +122,14 @@
     animation: slide 8s ease-out forwards infinite;
     animation-delay: 0.5s;
   }
-
+  .leaderboard__list {
+    max-width: 60%;
+    padding: 0 5px 0 0;
+    /* list-style: none; */
+    overflow-y: auto;
+    text-align: left;
+    font-size: 14px;
+  }
   @keyframes drop {
     from {
       transform: scale(20) rotate(-25deg);

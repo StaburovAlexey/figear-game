@@ -39,7 +39,6 @@ const updateScores = async (chapter_id, mode_id, score) => {
       chapter_id,
       mode_id,
       score,
-      name: user.value.name,
     })
   } catch (error) {
     console.error('Ошибка при обновлении данных пользователя:', error.message)
