@@ -128,7 +128,7 @@ export const initPixiApp = async (elementIdInit, stateRefs = {}, chapter) => {
           speedGame += 0.3
         }
 
-        if (chapter.mode !== 1 && stateRefs.seconds.value === 0) {
+        if (chapter.mode == 1 && stateRefs.seconds.value === 0) {
           clearInterval(timerShift)
           gameOver(true)
         }
